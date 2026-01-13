@@ -1,15 +1,290 @@
-RESEARCH METHODS - AQA PSYCHOLOGY (YEAR 12 VS YEAR 13)
-======================================================
+RESEARCH METHODS - AQA PSYCHOLOGY (GCSE, YEAR 12 AS & YEAR 13 A LEVEL)
+===================================================================
 
-SOURCES USED (OFFLINE CROSS-REFERENCE)
---------------------------------------
+SOURCES USED
+------------
+- AQA GCSE Psychology Specification (9-1): Research methods foundation content
 - AQA A-level Psychology Specification (first teaching 2015, updates through 2024): research methods split across AS (Year 12) and A level (Year 13).
 - AQA Teacher Guide/Handbook excerpts (research methods chapters) available in the cloned Lesson-Builder materials.
-- AQA Year 1 textbook extract located at Textbooks/AQA Year 1 textbook work.txt (cloned into _external/Lesson-Builder-).
+- AQA Year 1 textbook extract (Textbooks/AQA Year 1 textbook work.txt)
+- OCR'd GCSE Psychology Research Methods textbook (extracted November 2024)
 
 OVERVIEW
 --------
-Research methods contribute ~25% of assessment; ≥10% of marks assess mathematical skills. Practical, ethical research activities are expected throughout both years.
+GCSE: Introduction to core research methods concepts (~25% of assessment)
+Year 12 (AS): Builds foundation methods; secures control, ethics, validity/reliability
+Year 13 (A2): Extends to statistical inference, advanced techniques, reporting standards
+
+
+GCSE CONTENT
+=============
+
+THEORIES AND HYPOTHESES
+-----------------------
+Research begins with a theory—a suggested explanation for behaviour. Psychologists test theories through research.
+
+Aims: General statement explaining the purpose of a study.
+
+Hypotheses:
+- Alternative hypothesis: States a relationship (difference or correlation) between variables.
+- Null hypothesis: Statement of no relationship between variables.
+Hypotheses must be clear, precise, and testable (operationalised).
+
+Variables:
+- Independent variable (IV): The variable manipulated by experimenter; has different levels/conditions.
+- Dependent variable (DV): The variable measured by researcher; should depend only on IV.
+- Operationalisation: Clearly defining variables in measurable terms (e.g., "performance = number of balls thrown out of 20").
+
+EXTRANEOUS VARIABLES (EVs)
+--------------------------
+Any variable other than the IV that could affect the DV. Must be controlled to establish cause-and-effect.
+
+Types:
+- Situational variables: Aspects of environment (noise, lighting, temperature, time of day)
+- Participant variables: Individual differences (mood, motivation, concentration, ability, age, height)
+- Experimenter/Investigator effects: Things experimenter does that affect results (tone, encouragement, unconscious bias)
+
+RESEARCH PROCEDURES
+-------------------
+Standardised instructions: All participants receive identical information, word-for-word. Controls for instruction bias.
+
+Standardised procedures: All participants experience same environment, timing, and methods. Only the IV varies. Easier to achieve in laboratory.
+
+Randomisation: Using chance (coin flip, random selection) to allocate participants to conditions or determine order. Reduces researcher bias.
+
+TYPES OF EXPERIMENTS
+--------------------
+
+Laboratory Experiments:
+- Controlled environment; researcher manipulates IV and measures DV.
+- Strengths: High control of EVs; easier to establish cause-and-effect; standardised procedures allow replication.
+- Weaknesses: Artificial setting; may lack real-world relevance; participants aware of being tested (demand characteristics).
+
+Field Experiments:
+- Natural setting (café, street, gym); researcher still manipulates IV.
+- Strengths: More realistic; participants often unaware of study; better real-world validity.
+- Weaknesses: Less control of EVs; harder to establish cause-and-effect; ethical concerns (consent, privacy).
+
+Natural Experiments:
+- IV varies naturally; researcher does not manipulate it but measures effect on DV.
+- Strengths: Real-world issues; high external validity.
+- Weaknesses: No random allocation; cannot claim cause-and-effect; limited opportunities.
+
+Quantitative vs Qualitative Methods:
+- Quantitative: Data in numbers (measurements, counts); easier to analyse.
+- Qualitative: Data in words/descriptions; provides depth and detail.
+
+EXPERIMENTAL DESIGNS
+--------------------
+
+Independent Groups:
+- Separate groups of participants; each group experiences one condition (level of IV).
+- Allocation: Random methods to control participant variables (random allocation).
+- Strengths: No order effects (participants tested once); order not an EV.
+- Weaknesses: Participant variables may differ between groups (acting as EVs); need more participants.
+
+Repeated Measures:
+- All participants take part in all conditions.
+- Strengths: Participant variables controlled (each person compared to themselves); fewer participants needed.
+- Weaknesses: Order effects (practice effect, fatigue); demand characteristics may increase with multiple exposures.
+
+Counterbalancing: Used in repeated measures to control order effects. Half participants do Condition A then B; other half do B then A. Balances practice/fatigue effects.
+
+Matched Pairs:
+- Participants paired on relevant variables (ability, age, IQ); one paired member in each condition.
+- Strengths: No order effects; participant variables partly controlled.
+- Weaknesses: Matching takes time and is never exact; difficult to match on all relevant variables.
+
+SAMPLING METHODS
+----------------
+
+Target population: The group researcher wants to study.
+Sample: Subset of target population, should represent it.
+Generalization: Results should apply to target population; depends on sample representativeness.
+
+Random Sampling:
+- Every person in target population has equal chance of selection.
+- Method: List all members; use random technique (picking from hat, random number generator).
+- Strengths: No bias; should be representative.
+- Weaknesses: Time-consuming; requires complete list; people may refuse to participate.
+
+Opportunity Sampling:
+- Select people who are available and willing at the time (e.g., students in common room).
+- Strengths: Quick and easy; cheap.
+- Weaknesses: Sample likely unrepresentative; biased; results hard to generalize.
+
+Systematic Sampling:
+- Select every nth person from a list (e.g., every 10th name from phone book).
+- Strengths: Avoids researcher bias; usually representative.
+- Weaknesses: May still be biased; representativeness not guaranteed.
+
+Stratified Sampling:
+- Identify subgroups (strata) in target population; select from each in proportion to their frequency.
+- Strengths: Most representative; ensures key subgroups included.
+- Weaknesses: Time-consuming; may not be used in practice; selected participants may refuse.
+
+ETHICAL CONSIDERATIONS
+----------------------
+
+Ethical Issues: Conflicts between participants' rights and researcher goals.
+
+Informed Consent:
+- Participants given comprehensive information about nature, purpose, and their role.
+- Must include: aims, procedures, right to withdraw, right to refuse.
+- Allows participants to make informed decision to participate.
+- Issue: If aims revealed, may affect behaviour (demand characteristics).
+
+Deception:
+- Participants should not be lied to or misled.
+- Mild deception (withholding some information) may be justified if minimal risk.
+- Major deception only permitted if benefits outweigh harms.
+
+Protection from Harm:
+- Physical and psychological safety must be protected.
+- No embarrassment, stress, or risk.
+- Participants must be told they can leave at any time (right to withdraw).
+
+Privacy:
+- People expect to control information about themselves.
+- Observation in public may be acceptable if behaviour is happening anyway.
+
+Confidentiality:
+- If privacy invaded, identity must be protected.
+- Participants should be anonymous (use Participant 1, Participant 2, etc., not names).
+- Data belongs to participant; not shared without consent.
+
+British Psychological Society (BPS) Guidelines:
+- Code of conduct all UK professional psychologists follow.
+- Based on four principles: respect, competence, responsibility, integrity.
+- Ethics committee reviews studies before conducting.
+- Dealing with issues:
+  * Informed Consent: Written consent forms (parent/guardian if under 16).
+  * Deception/Protection from Harm: Full debriefing at end; inform of true aims; reassure about behaviour; offer counselling if needed.
+  * Privacy/Confidentiality: Use anonymity; don't share data without permission.
+
+SELF-REPORT TECHNIQUES
+----------------------
+
+Questionnaires: Set of written questions; respondents answer in fixed or open ways.
+
+Open questions: Respondents answer freely; produce qualitative data; rich detail; hard to analyse.
+Closed questions: Fixed options (yes/no, rating scales, Likert scales); produce quantitative data; easy to analyse but may lack depth.
+
+Design considerations: Avoid leading questions, double-barrelled questions, complex language, ambiguity. Pilot test before full use.
+
+Interviews: Face-to-face (or phone) interaction between interviewer and interviewee.
+
+Structured interviews: Pre-set questions read in same order; like questionnaire but live.
+Semi-structured interviews: Some pre-set questions; flexibility for follow-up questions.
+Unstructured interviews: Few prepared questions; develop naturally like conversation; flexible.
+
+Strengths of interviews: Provide extensive information; good for detailed insights; reach people who can't write.
+Weaknesses: Data hard to analyse; participants may not reveal sensitive information; less comfortable than questionnaire.
+
+OBSERVATION STUDIES
+-------------------
+
+Observation: Watching and recording behaviour in its setting.
+
+Types:
+- Naturalistic: Behaviour in natural setting where it normally occurs; nothing changed in environment.
+- Controlled: Some aspects of environment managed; more systematic observation.
+- Covert: Participants unaware behaviour is recorded; raises ethical issues; low demand characteristics.
+- Overt: Participants know behaviour is watched; may change behaviour; ethical but less natural.
+- Participant: Researcher becomes member of group being studied; may lose objectivity but gain insight.
+- Non-participant: Researcher remains separate; maintains objectivity; less insight.
+
+Categories of behaviour: Break target behaviour into observable units (e.g., flirting = eye contact, smiling, laughing, touching). Must be observable, non-overlapping, comprehensive.
+
+Interobserver reliability: Consistency between two or more observers. Check by comparing observations on same behaviour; if similar, reliability high. If different, redefine categories.
+
+Strengths: Observe real behaviour (not just self-report); better validity; covert observation avoids demand characteristics.
+Weaknesses: Ethical issues (privacy invasion); observer bias (expectations influence what's seen).
+
+CORRELATIONS
+------------
+
+Correlation: Mathematical technique investigating association between two variables (co-variables).
+
+Co-variables: Two variables being measured; not referred to as IV/DV because no manipulation.
+
+Types:
+- Positive correlation: One increases as other increases (e.g., height and weight).
+- Negative correlation: One increases as other decreases (e.g., people in room and personal space).
+- Zero correlation: No relationship (e.g., crossword time and crisp sales).
+
+Scatter diagram: Graph plotting co-variables; closer dots to diagonal = stronger correlation; direction shows type.
+
+Strengths: Good starting point; identifies patterns; quick; economical; no manipulation needed.
+Weaknesses: Cannot show cause-and-effect (cannot claim which causes which); third variable problem (other variables may be involved).
+
+CASE STUDIES
+------------
+
+Case study: In-depth investigation of single individual, group, or event (unusual or rare, or everyday experience).
+
+Qualitative method: Uses interviews, observations, tests; produces mostly qualitative data.
+
+Longitudinal: Often conducted over long period; allows observation of behaviour change over time.
+
+Strengths: Researchers open-minded; provides unusual insights; best for rare/unusual behaviours; rich, detailed data.
+Weaknesses: Cannot generalize (unique individual/event); subjective (based on researcher interpretation); difficult before-after comparisons.
+
+RELIABILITY AND VALIDITY
+------------------------
+
+Reliability: Consistency of measurement. If measurement repeated, result should be same (unless thing changed).
+
+Validity: Whether result is 'true'; research represents reality; results relate to everyday life.
+
+Reliability issues:
+- Quantitative methods (experiments, questionnaires with closed questions, observations with clear categories): Generally reliable; easy to repeat.
+- Qualitative methods (unstructured interviews, case studies): Less reliable; harder to repeat exactly; more open to interpretation.
+
+Validity issues:
+- Laboratory experiments: High internal validity (control); low external validity (artificiality, demand characteristics).
+- Field experiments: Higher external validity (realistic); lower internal validity (less control of EVs).
+- Sampling methods: Some (stratified) produce more representative samples than others (opportunity).
+- Participant variables (independent groups): Act as EVs, reducing validity; controlled by random allocation or matched pairs.
+- Order effects (repeated measures): Act as EVs; controlled by counterbalancing.
+
+TYPES OF DATA
+-------------
+
+Quantitative Data: Numbers; counted data; easy to analyse; may lack depth.
+
+Qualitative Data: Words, descriptions; not numerical; provides rich detail; harder to analyse; more open to bias.
+
+Primary Data: Collected first-hand by researcher for current study; fits research aims; authentic; time and effort required.
+
+Secondary Data: Already collected by someone else; easy to access; quick; may not fit aims; may be outdated/incomplete.
+
+DESCRIPTIVE STATISTICS
+----------------------
+
+Mean: Mathematical average; add all scores, divide by number of scores.
+- Strength: Uses all scores; most sensitive.
+- Weakness: Distorted by extreme scores.
+
+Median: Middle score when arranged from lowest to highest.
+- Strength: Not affected by extreme scores.
+- Weakness: Less sensitive; not all scores included in calculation.
+
+Mode: Most common score.
+- Strength: Easy to calculate.
+- Weakness: May be unrepresentative.
+
+Range: Difference between highest and lowest scores. Subtract lowest from highest.
+- Strength: Simple.
+- Weakness: Distorted by extreme scores.
+
+Frequency tables: Systematic way to organize and display how often scores occur.
+
+Histograms: Graph of continuous data; bars represent frequency; no gaps between bars; has true zero; organized sequence.
+
+Bar charts: Graph of categorical data; bars represent frequency; spaces between bars; categories have no fixed order; no true zero.
+
+Normal distribution: Symmetrical, bell-shaped curve. Mean, median, and mode at same point (peak). Two halves perfectly symmetrical.
 
 
 YEAR 12 (AS) CONTENT
