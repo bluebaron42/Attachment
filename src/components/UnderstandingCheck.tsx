@@ -1,5 +1,5 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { CheckCircle, AlertCircle, Brain } from 'lucide-react';
+import { useState, useMemo, useEffect } from 'react';
+import { CheckCircle, Brain } from 'lucide-react';
 
 export interface UnderstandingCheckQuestion {
   id: number;

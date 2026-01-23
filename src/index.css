@@ -224,3 +224,541 @@ body {
 .btn-glow:hover::before {
   left: 100%;
 }
+
+/* ==========================================
+   NEON & GLOW EFFECTS (Reference Style)
+   ========================================== */
+
+/* Neon Border Effect */
+.neon-border {
+  border: 1px solid #22c55e;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+}
+
+.neon-border-cyan {
+  border: 1px solid #06b6d4;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.3), 0 0 20px rgba(6, 182, 212, 0.1);
+}
+
+.neon-border-pink {
+  border: 1px solid #ec4899;
+  box-shadow: 0 0 10px rgba(236, 72, 153, 0.3), 0 0 20px rgba(236, 72, 153, 0.1);
+}
+
+.neon-border-amber {
+  border: 1px solid #f59e0b;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3), 0 0 20px rgba(245, 158, 11, 0.1);
+}
+
+/* Neon Text Glow */
+.text-neon {
+  text-shadow: 0 0 5px rgba(34, 197, 94, 0.5), 0 0 10px rgba(34, 197, 94, 0.3);
+}
+
+.text-neon-cyan {
+  text-shadow: 0 0 5px rgba(6, 182, 212, 0.5), 0 0 10px rgba(6, 182, 212, 0.3);
+}
+
+.text-neon-pink {
+  text-shadow: 0 0 5px rgba(236, 72, 153, 0.5), 0 0 10px rgba(236, 72, 153, 0.3);
+}
+
+.text-neon-amber {
+  text-shadow: 0 0 5px rgba(245, 158, 11, 0.5), 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.text-neon-purple {
+  text-shadow: 0 0 5px rgba(168, 85, 247, 0.5), 0 0 10px rgba(168, 85, 247, 0.3);
+}
+
+/* Animated Neon Pulse */
+@keyframes pulse-neon {
+  0%, 100% { 
+    box-shadow: 0 0 5px rgba(236, 72, 153, 0.3), 0 0 10px rgba(236, 72, 153, 0.2);
+  }
+  50% { 
+    box-shadow: 0 0 15px rgba(236, 72, 153, 0.5), 0 0 30px rgba(236, 72, 153, 0.3);
+  }
+}
+.animate-pulse-neon {
+  animation: pulse-neon 2s ease-in-out infinite;
+}
+
+@keyframes pulse-neon-cyan {
+  0%, 100% { 
+    box-shadow: 0 0 5px rgba(6, 182, 212, 0.3), 0 0 10px rgba(6, 182, 212, 0.2);
+  }
+  50% { 
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.5), 0 0 30px rgba(6, 182, 212, 0.3);
+  }
+}
+.animate-pulse-neon-cyan {
+  animation: pulse-neon-cyan 2s ease-in-out infinite;
+}
+
+/* Glass Panel Effect */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Blueprint Grid Background */
+.blueprint-grid {
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Enhanced Card Hover with Glow */
+.card-hover-glow {
+  transition: all 0.3s ease;
+}
+.card-hover-glow:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(6, 182, 212, 0.15);
+}
+
+/* Progress Bar Glow */
+.progress-glow {
+  box-shadow: 0 0 10px currentColor;
+}
+
+/* Retro Scanlines Overlay */
+.retro-scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Card Deck Grid */
+.card-deck {
+  display: grid;
+  gap: 1rem;
+}
+
+/* Interactive Card States */
+.interactive-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+.interactive-card:hover {
+  transform: scale(1.02) translateY(-2px);
+}
+.interactive-card:active {
+  transform: scale(0.98);
+}
+
+/* Gradient Border Animation */
+@keyframes gradient-border {
+  0%, 100% { border-color: rgba(6, 182, 212, 0.5); }
+  25% { border-color: rgba(236, 72, 153, 0.5); }
+  50% { border-color: rgba(168, 85, 247, 0.5); }
+  75% { border-color: rgba(34, 197, 94, 0.5); }
+}
+.animate-gradient-border {
+  animation: gradient-border 4s ease-in-out infinite;
+}
+
+/* Depth Shadow */
+.shadow-depth {
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    0 10px 15px -3px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Accent Line */
+.accent-line {
+  position: relative;
+}
+.accent-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, #06b6d4, #8b5cf6);
+  border-radius: 2px;
+}
+
+/* ==========================================
+   INTERACTIVE DIALS, METERS & GAUGES
+   ========================================== */
+
+/* Circular Progress Ring */
+.progress-ring {
+  transform: rotate(-90deg);
+}
+.progress-ring__circle {
+  transition: stroke-dashoffset 0.5s ease-in-out;
+}
+
+/* Radial Dial Base */
+.radial-dial {
+  position: relative;
+  border-radius: 50%;
+  background: conic-gradient(from 180deg, #1e293b, #0f172a);
+  box-shadow: 
+    inset 0 0 30px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(6, 182, 212, 0.2);
+}
+
+/* Gauge Needle */
+.gauge-needle {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Meter Fill Animation */
+@keyframes meter-fill {
+  from { width: 0%; }
+}
+.meter-animate {
+  animation: meter-fill 1s ease-out forwards;
+}
+
+/* Slider Track Glow */
+.slider-glow::-webkit-slider-thumb {
+  box-shadow: 0 0 15px currentColor, 0 0 30px currentColor;
+}
+
+/* ==========================================
+   FLIP CARDS & 3D TRANSFORMS
+   ========================================== */
+
+/* Flip Card Container */
+.flip-card {
+  perspective: 1000px;
+}
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner,
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* 3D Tilt Effect */
+.card-3d {
+  transition: transform 0.3s ease;
+  transform-style: preserve-3d;
+}
+.card-3d:hover {
+  transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) translateZ(10px);
+}
+
+/* ==========================================
+   SATISFYING BUTTON EFFECTS
+   ========================================== */
+
+/* Ripple Button */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+.btn-ripple::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.3) 10%, transparent 10%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform 0.5s, opacity 1s;
+}
+.btn-ripple:active::after {
+  transform: scale(0, 0);
+  opacity: 0.3;
+  transition: 0s;
+}
+
+/* Magnetic Button */
+.btn-magnetic {
+  transition: transform 0.2s ease-out;
+}
+
+/* Bouncy Button */
+.btn-bouncy {
+  transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.btn-bouncy:hover {
+  transform: scale(1.05);
+}
+.btn-bouncy:active {
+  transform: scale(0.95);
+}
+
+/* Neon Button */
+.btn-neon {
+  position: relative;
+  z-index: 1;
+}
+.btn-neon::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #06b6d4, #ec4899, #8b5cf6, #06b6d4);
+  background-size: 400% 400%;
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: gradient-shift 3s ease infinite;
+}
+.btn-neon:hover::before {
+  opacity: 1;
+}
+
+/* ==========================================
+   STAT CARDS & DATA DISPLAY
+   ========================================== */
+
+/* Stat Card with Glow */
+.stat-card {
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+.stat-card:hover {
+  border-color: rgba(6, 182, 212, 0.5);
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);
+}
+
+/* Percentage Ring */
+.percentage-ring {
+  position: relative;
+}
+.percentage-ring::before {
+  content: attr(data-percentage) '%';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Counter Animation */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-count {
+  animation: count-up 0.5s ease-out forwards;
+}
+
+/* ==========================================
+   TOGGLE & SWITCH STYLES
+   ========================================== */
+
+/* Modern Toggle Switch */
+.toggle-switch {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.toggle-switch::before {
+  content: '';
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  background: linear-gradient(145deg, #374151, #1f2937);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.toggle-switch.active {
+  background: linear-gradient(145deg, #06b6d4, #0891b2);
+}
+.toggle-switch.active::before {
+  left: 32px;
+  background: white;
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+}
+
+/* ==========================================
+   TOOLTIP & POPOVER EFFECTS
+   ========================================== */
+
+/* Tooltip with Arrow */
+.tooltip-arrow {
+  position: relative;
+}
+.tooltip-arrow::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  padding: 8px 12px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 50;
+}
+.tooltip-arrow:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-12px);
+}
+
+/* ==========================================
+   LOADING & PROGRESS INDICATORS
+   ========================================== */
+
+/* Skeleton Loading */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite, skeleton-pulse 2s infinite;
+}
+
+/* Spinner Ring */
+@keyframes spin-ring {
+  to { transform: rotate(360deg); }
+}
+.spinner-ring {
+  border: 3px solid rgba(6, 182, 212, 0.2);
+  border-top-color: #06b6d4;
+  border-radius: 50%;
+  animation: spin-ring 0.8s linear infinite;
+}
+
+/* Dots Loading */
+@keyframes dots-bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+.dots-loading span {
+  animation: dots-bounce 1.4s infinite ease-in-out both;
+}
+.dots-loading span:nth-child(1) { animation-delay: -0.32s; }
+.dots-loading span:nth-child(2) { animation-delay: -0.16s; }
+
+/* ==========================================
+   CHIP & BADGE STYLES
+   ========================================== */
+
+/* Glowing Badge */
+.badge-glow {
+  position: relative;
+}
+.badge-glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: inherit;
+  border-radius: inherit;
+  filter: blur(8px);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+/* Animated Border Badge */
+@keyframes border-dance {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.badge-animated-border {
+  background: linear-gradient(90deg, #06b6d4, #ec4899, #8b5cf6, #06b6d4);
+  background-size: 300% 300%;
+  animation: border-dance 3s ease infinite;
+  padding: 2px;
+}
+
+/* ==========================================
+   ACCORDION & EXPAND EFFECTS
+   ========================================== */
+
+/* Smooth Expand */
+.expand-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease-out;
+}
+.expand-content.expanded {
+  grid-template-rows: 1fr;
+}
+.expand-content > div {
+  overflow: hidden;
+}
+
+/* ==========================================
+   NUMBER INPUT STEPPER
+   ========================================== */
+
+/* Stepper Buttons */
+.stepper-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #374151, #1f2937);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.stepper-btn:hover {
+  background: linear-gradient(145deg, #06b6d4, #0891b2);
+  color: white;
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+}
+.stepper-btn:active {
+  transform: scale(0.9);
+}

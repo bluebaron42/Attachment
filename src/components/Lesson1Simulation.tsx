@@ -35,19 +35,7 @@ export default function Lesson1Simulation({ isPresentation, themeColor = 'cyan' 
     slate: 'text-slate-400'
   };
 
-  const buttonColorMap: Record<string, string> = {
-    cyan: 'bg-cyan-600 hover:bg-cyan-500',
-    amber: 'bg-amber-600 hover:bg-amber-500',
-    orange: 'bg-orange-600 hover:bg-orange-500',
-    red: 'bg-red-600 hover:bg-red-500',
-    yellow: 'bg-yellow-600 hover:bg-yellow-500',
-    teal: 'bg-teal-600 hover:bg-teal-500',
-    purple: 'bg-purple-600 hover:bg-purple-500',
-    slate: 'bg-slate-600 hover:bg-slate-500'
-  };
-
   const themeIconColor = colorMap[themeColor] || colorMap.cyan;
-  const themeButtonColor = buttonColorMap[themeColor] || buttonColorMap.cyan;
 
   const handleReset = () => {
     setCurrentScenario(0);

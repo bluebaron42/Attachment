@@ -46,11 +46,18 @@ export default function App() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') nextSlide();
       if (e.key === 'ArrowLeft') prevSlide();
-      if (e.key === 'Escape') setIsPresentation(false);
+      if (e.key === 'Escape') {
+        if (isPresentation) {
+          if (document.fullscreenElement) {
+            document.exitFullscreen().catch(() => {});
+          }
+        }
+        setIsPresentation(false);
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentSlide, slideCount]);
+  }, [currentSlide, slideCount, isPresentation]);
 
   const nextSlide = () => {
     if (currentSlide < slideCount - 1) setCurrentSlide(prev => prev + 1);
@@ -67,24 +74,30 @@ export default function App() {
         case 0:
           return (
             <Slide isPresentation={isPresentation}>
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <div className="relative mb-8">
-                  <div className="absolute inset-0 bg-cyan-500 blur-[100px] opacity-20 rounded-full animate-pulse"></div>
-                  <div className="relative z-10 flex gap-4">
-                    <Baby size={isPresentation ? 100 : 80} className="text-cyan-400 animate-heartbeat" />
-                    <Heart size={isPresentation ? 100 : 80} className="text-pink-400" />
+              <div className="flex flex-col items-center justify-center h-full text-center relative">
+                {/* Background glow effects */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500 blur-[150px] opacity-15 rounded-full animate-pulse"></div>
+                  <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-pink-500 blur-[120px] opacity-10 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+                </div>
+                
+                <div className="relative mb-8 z-10">
+                  <div className="absolute inset-0 bg-cyan-500 blur-[80px] opacity-25 rounded-full animate-pulse"></div>
+                  <div className="relative z-10 flex gap-6 p-6 glass-panel rounded-2xl">
+                    <Baby size={isPresentation ? 100 : 80} className="text-cyan-400 animate-heartbeat drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
+                    <Heart size={isPresentation ? 100 : 80} className="text-pink-400 drop-shadow-[0_0_10px_rgba(236,72,153,0.5)]" />
                   </div>
                 </div>
-                <h1 className={`font-bold text-white mb-4 tracking-widest uppercase ${isPresentation ? 'text-8xl' : 'text-6xl'}`}>
+                <h1 className={`font-bold text-white mb-4 tracking-widest uppercase text-neon-cyan ${isPresentation ? 'text-8xl' : 'text-6xl'}`}>
                   Caregiver-Infant <span className="text-cyan-400">Interactions</span>
                 </h1>
-                <div className="h-1 w-64 bg-cyan-600 my-6"></div>
-                <h2 className="text-cyan-600 text-xs tracking-[0.5em] uppercase mb-12 font-bold">
+                <div className="h-1 w-64 bg-gradient-to-r from-transparent via-cyan-500 to-transparent my-6 shadow-[0_0_10px_rgba(6,182,212,0.5)]"></div>
+                <h2 className="text-cyan-500 text-xs tracking-[0.5em] uppercase mb-12 font-bold">
                   Attachment Lesson 01
                 </h2>
                 <button
                   onClick={nextSlide}
-                  className={`group relative bg-slate-900 border-2 border-cyan-500 text-cyan-400 font-bold px-12 py-4 rounded-xl hover:bg-cyan-900/30 hover:text-white transition-all ${isPresentation ? 'text-2xl' : 'text-lg'} uppercase shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40`}
+                  className={`group relative bg-slate-900/80 border-2 border-cyan-500 text-cyan-400 font-bold px-12 py-4 rounded-xl hover:bg-cyan-900/40 hover:text-white transition-all ${isPresentation ? 'text-2xl' : 'text-lg'} uppercase shadow-[0_0_20px_rgba(6,182,212,0.25)] hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] animate-pulse-neon-cyan`}
                 >
                   <span className="relative z-10">Start Lesson</span>
                   <div className="absolute inset-0 bg-cyan-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -122,9 +135,11 @@ export default function App() {
               />
               <div className={`grid grid-cols-1 lg:grid-cols-2 h-full ${isPresentation ? 'gap-10' : 'gap-6'}`}>
                   {/* Definition Card */}
-                  <div className={`bg-gray-800 rounded-xl border-t-4 border-cyan-500 shadow-xl overflow-hidden ${isPresentation ? 'p-10' : 'p-6'}`}>
+                  <div className={`bg-gray-800/90 rounded-2xl border border-cyan-500/30 shadow-xl overflow-hidden card-hover-glow relative group ${isPresentation ? 'p-10' : 'p-6'}`}>
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 via-cyan-400 to-cyan-500"></div>
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 blur-2xl rounded-full group-hover:bg-cyan-500/10 transition-colors"></div>
                     <h3 className={`text-cyan-400 font-bold mb-4 ${isPresentation ? 'text-3xl' : 'text-xl'}`}>
-                      📖 What is Reciprocity?
+                      What is Reciprocity?
                     </h3>
                     <p className={`text-gray-300 leading-relaxed ${isPresentation ? 'text-xl' : 'text-sm'}`}>
                       <strong className="text-white">Reciprocity</strong> refers to the <span className="text-cyan-300 font-semibold">two-way, mutual interaction</span> between caregiver and infant. 
@@ -141,19 +156,20 @@ export default function App() {
                   </div>
 
                   {/* Research Evidence */}
-                  <div className={`bg-gray-800 rounded-xl border border-cyan-500/30 shadow-xl flex flex-col ${isPresentation ? 'p-10' : 'p-6'}`}>
-                    <h3 className={`text-cyan-400 font-bold mb-4 border-b border-gray-700 pb-3 ${isPresentation ? 'text-3xl' : 'text-xl'}`}>
-                      🔬 Research Evidence
+                  <div className={`bg-gray-800/90 rounded-2xl border border-cyan-500/30 shadow-xl flex flex-col card-hover-glow relative group ${isPresentation ? 'p-10' : 'p-6'}`}>
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 blur-2xl rounded-full group-hover:bg-cyan-500/10 transition-colors"></div>
+                    <h3 className={`text-cyan-400 font-bold mb-4 border-b border-gray-700/50 pb-3 ${isPresentation ? 'text-3xl' : 'text-xl'}`}>
+                      Research Evidence
                     </h3>
-                    <div className={`bg-cyan-900/20 rounded-lg border-l-4 border-cyan-500 flex-grow ${isPresentation ? 'p-6' : 'p-4'}`}>
-                      <p className={`font-bold text-cyan-300 uppercase mb-2 ${isPresentation ? 'text-lg' : 'text-xs'}`}>Brazleton et al. (1975)</p>
+                    <div className={`bg-cyan-900/20 rounded-xl border-l-4 border-cyan-500 flex-grow shadow-[inset_0_0_20px_rgba(6,182,212,0.05)] ${isPresentation ? 'p-6' : 'p-4'}`}>
+                      <p className={`font-bold text-cyan-300 uppercase mb-2 tracking-wider ${isPresentation ? 'text-lg' : 'text-xs'}`}>Brazleton et al. (1975)</p>
                       <p className={`text-gray-300 leading-relaxed ${isPresentation ? 'text-xl' : 'text-sm'}`}>
                         Described caregiver-infant interaction as a <span className="text-cyan-300 font-semibold">"dance"</span> where each partner responds to the other's cues.
                         When caregivers ignored infant signals, babies showed <span className="text-red-300 font-semibold">distress</span>.
                       </p>
                     </div>
-                    <div className={`mt-4 bg-gray-900/50 rounded-lg ${isPresentation ? 'p-6' : 'p-4'}`}>
-                      <h4 className={`text-white font-bold mb-2 ${isPresentation ? 'text-xl' : 'text-sm'}`}>💡 Example Chain</h4>
+                    <div className={`mt-4 bg-gray-900/60 rounded-xl border border-gray-700/50 ${isPresentation ? 'p-6' : 'p-4'}`}>
+                      <h4 className={`text-white font-bold mb-2 ${isPresentation ? 'text-xl' : 'text-sm'}`}>Example Chain</h4>
                       <p className={`text-gray-300 ${isPresentation ? 'text-lg' : 'text-sm'}`}>
                         Baby smiles → Caregiver smiles back → Baby coos → Caregiver talks → Baby babbles...
                         <br /><br />
@@ -581,7 +597,7 @@ export default function App() {
                 {/* Essay Question */}
                 <div className={`bg-gradient-to-r from-cyan-900/40 to-cyan-800/20 border-l-4 border-cyan-500 rounded-r-xl shadow-xl mb-6 ${isPresentation ? 'p-6' : 'p-4'}`}>
                   <p className={`text-cyan-300 font-bold ${isPresentation ? 'text-2xl' : 'text-lg'}`}>
-                    📝 Sample Question: "Outline and evaluate research into caregiver-infant interactions." (16 marks)
+                    📝 Sample Question: "Outline and evaluate research into caregiver-infant interactions." (12 marks)
                   </p>
                 </div>
 
@@ -711,23 +727,31 @@ export default function App() {
         case 0:
           return (
             <Slide isPresentation={isPresentation}>
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <div className="flex items-center gap-4 mb-6 relative">
-                  <div className="absolute inset-0 bg-amber-500 blur-[100px] opacity-20 rounded-full"></div>
-                  <Clock size={isPresentation ? 64 : 48} className="text-amber-400 relative z-10" />
-                  <Baby size={isPresentation ? 64 : 48} className="text-amber-400 relative z-10" />
+              <div className="flex flex-col items-center justify-center h-full text-center relative">
+                {/* Background glow effects */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-amber-500 blur-[150px] opacity-15 rounded-full animate-pulse"></div>
+                  <div className="absolute bottom-1/3 right-1/3 w-64 h-64 bg-yellow-500 blur-[120px] opacity-10 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
                 </div>
-                <h1 className={`font-black mb-4 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 bg-clip-text text-transparent ${isPresentation ? 'text-7xl' : 'text-5xl'}`}>
+                
+                <div className="flex items-center gap-4 mb-6 relative z-10">
+                  <div className="absolute inset-0 bg-amber-500 blur-[80px] opacity-20 rounded-full"></div>
+                  <div className="relative z-10 flex gap-4 p-6 glass-panel rounded-2xl">
+                    <Clock size={isPresentation ? 64 : 48} className="text-amber-400 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]" />
+                    <Baby size={isPresentation ? 64 : 48} className="text-amber-400 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]" />
+                  </div>
+                </div>
+                <h1 className={`font-black mb-4 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 bg-clip-text text-transparent drop-shadow-lg ${isPresentation ? 'text-7xl' : 'text-5xl'}`}>
                   Schaffer's Stages of Attachment
                 </h1>
-                <div className={`h-1 w-64 bg-amber-600 mb-4`}></div>
+                <div className="h-1 w-64 bg-gradient-to-r from-transparent via-amber-500 to-transparent mb-4 shadow-[0_0_10px_rgba(245,158,11,0.5)]"></div>
                 <p className={`text-amber-400 max-w-2xl mb-8 tracking-widest uppercase font-bold ${isPresentation ? 'text-xl' : 'text-sm'}`}>
                   How attachment develops over the first year of life
                 </p>
                 <div className={`flex flex-wrap justify-center gap-3 ${isPresentation ? 'text-lg' : 'text-sm'}`}>
-                  <span className="bg-amber-900/30 text-amber-400 px-4 py-2 rounded-full border border-amber-500/30">4 Developmental Stages</span>
-                  <span className="bg-amber-900/30 text-amber-400 px-4 py-2 rounded-full border border-amber-500/30">Schaffer & Emerson (1964)</span>
-                  <span className="bg-amber-900/30 text-amber-400 px-4 py-2 rounded-full border border-amber-500/30">Glasgow Babies Study</span>
+                  <span className="bg-amber-900/40 text-amber-400 px-4 py-2 rounded-full border border-amber-500/40 shadow-[0_0_10px_rgba(245,158,11,0.15)]">4 Developmental Stages</span>
+                  <span className="bg-amber-900/40 text-amber-400 px-4 py-2 rounded-full border border-amber-500/40 shadow-[0_0_10px_rgba(245,158,11,0.15)]">Schaffer & Emerson (1964)</span>
+                  <span className="bg-amber-900/40 text-amber-400 px-4 py-2 rounded-full border border-amber-500/40 shadow-[0_0_10px_rgba(245,158,11,0.15)]">Glasgow Babies Study</span>
                 </div>
               </div>
             </Slide>
@@ -825,61 +849,166 @@ export default function App() {
                 isPresentation={isPresentation}
               />
               <div className={`w-full h-full ${isPresentation ? 'px-6' : 'px-4'}`}>
+                {/* Timeline connector line */}
+                <div className="relative">
+                  <div className={`absolute left-0 right-0 top-1/2 h-1 bg-gradient-to-r from-slate-600 via-blue-500 via-amber-500 to-green-500 rounded-full opacity-30 hidden lg:block ${isPresentation ? 'mx-12' : 'mx-6'}`}></div>
+                </div>
+                
                 <div className={`grid grid-cols-1 lg:grid-cols-4 h-full ${isPresentation ? 'gap-6' : 'gap-4'}`}>
-                  {/* Stage 1 */}
-                  <div className={`bg-gray-800 rounded-xl border-t-4 border-slate-500 shadow-xl flex flex-col ${isPresentation ? 'p-6' : 'p-4'}`}>
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className={`bg-slate-900/60 text-slate-400 font-bold rounded-lg ${isPresentation ? 'px-3 py-1 text-lg' : 'px-2 py-0.5 text-sm'}`}>1</span>
-                      <h4 className={`font-bold text-slate-400 ${isPresentation ? 'text-lg' : 'text-sm'}`}>Asocial</h4>
+                  {/* Stage 1 - Asocial */}
+                  <div className={`group relative bg-gradient-to-br from-slate-900/60 to-slate-800/30 rounded-xl shadow-xl hover:shadow-2xl hover:shadow-slate-500/20 transition-all duration-500 cursor-pointer transform hover:scale-[1.03] hover:-translate-y-1 flex flex-col overflow-hidden ${isPresentation ? 'p-6' : 'p-4'}`}>
+                    {/* Glow effect on hover */}
+                    <div className="absolute inset-0 bg-slate-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    {/* Stage indicator with pulse */}
+                    <div className="flex items-center justify-between mb-3 relative z-10">
+                      <div className="flex items-center gap-2">
+                        <div className={`relative ${isPresentation ? 'w-12 h-12' : 'w-9 h-9'}`}>
+                          <div className="absolute inset-0 bg-slate-500/30 rounded-full animate-ping opacity-20"></div>
+                          <div className={`relative w-full h-full bg-gradient-to-br from-slate-500 to-slate-700 rounded-full flex items-center justify-center shadow-lg shadow-slate-500/30`}>
+                            <span className={`text-white font-black ${isPresentation ? 'text-xl' : 'text-base'}`}>1</span>
+                          </div>
+                        </div>
+                        <h4 className={`font-black text-slate-300 ${isPresentation ? 'text-xl' : 'text-base'}`}>Asocial</h4>
+                      </div>
                     </div>
-                    <p className={`text-amber-400 font-semibold mb-2 ${isPresentation ? 'text-base' : 'text-xs'}`}>0-6 weeks</p>
-                    <ul className={`text-gray-300 space-y-2 flex-grow ${isPresentation ? 'text-sm' : 'text-xs'}`}>
-                      <li>• Similar responses to objects & people</li>
-                      <li>• Preference for faces/eyes</li>
-                      <li>• No specific attachments</li>
+                    
+                    {/* Age badge */}
+                    <div className={`bg-slate-800/80 border border-slate-500/40 rounded-lg mb-3 text-center ${isPresentation ? 'py-2 px-3' : 'py-1.5 px-2'}`}>
+                      <span className={`text-slate-300 font-bold ${isPresentation ? 'text-lg' : 'text-sm'}`}>0-6 weeks</span>
+                    </div>
+                    
+                    <ul className={`text-gray-300 space-y-2 flex-grow relative z-10 ${isPresentation ? 'text-sm' : 'text-xs'}`}>
+                      <li className="flex items-start gap-2 group-hover:translate-x-1 transition-transform">
+                        <span className="text-slate-400 mt-0.5">●</span>
+                        <span>Similar responses to objects & people</span>
+                      </li>
+                      <li className="flex items-start gap-2 group-hover:translate-x-1 transition-transform delay-75">
+                        <span className="text-slate-400 mt-0.5">●</span>
+                        <span>Preference for faces/eyes</span>
+                      </li>
+                      <li className="flex items-start gap-2 group-hover:translate-x-1 transition-transform delay-100">
+                        <span className="text-slate-400 mt-0.5">●</span>
+                        <span>No specific attachments</span>
+                      </li>
                     </ul>
+                    
+                    {/* Bottom gradient bar */}
+                    <div className="h-1 w-full bg-gradient-to-r from-slate-600 to-slate-400 rounded-full mt-3 group-hover:shadow-[0_0_10px_rgba(148,163,184,0.5)] transition-shadow"></div>
                   </div>
 
-                  {/* Stage 2 */}
-                  <div className={`bg-gray-800 rounded-xl border-t-4 border-blue-500 shadow-xl flex flex-col ${isPresentation ? 'p-6' : 'p-4'}`}>
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className={`bg-blue-900/60 text-blue-400 font-bold rounded-lg ${isPresentation ? 'px-3 py-1 text-lg' : 'px-2 py-0.5 text-sm'}`}>2</span>
-                      <h4 className={`font-bold text-blue-400 ${isPresentation ? 'text-lg' : 'text-sm'}`}>Indiscriminate</h4>
+                  {/* Stage 2 - Indiscriminate */}
+                  <div className={`group relative bg-gradient-to-br from-blue-900/60 to-blue-800/30 rounded-xl shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 cursor-pointer transform hover:scale-[1.03] hover:-translate-y-1 flex flex-col overflow-hidden ${isPresentation ? 'p-6' : 'p-4'}`}>
+                    <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div className="flex items-center justify-between mb-3 relative z-10">
+                      <div className="flex items-center gap-2">
+                        <div className={`relative ${isPresentation ? 'w-12 h-12' : 'w-9 h-9'}`}>
+                          <div className="absolute inset-0 bg-blue-500/30 rounded-full animate-ping opacity-20"></div>
+                          <div className={`relative w-full h-full bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/30`}>
+                            <span className={`text-white font-black ${isPresentation ? 'text-xl' : 'text-base'}`}>2</span>
+                          </div>
+                        </div>
+                        <h4 className={`font-black text-blue-300 ${isPresentation ? 'text-xl' : 'text-base'}`}>Indiscriminate</h4>
+                      </div>
                     </div>
-                    <p className={`text-amber-400 font-semibold mb-2 ${isPresentation ? 'text-base' : 'text-xs'}`}>6 weeks - 6 months</p>
-                    <ul className={`text-gray-300 space-y-2 flex-grow ${isPresentation ? 'text-sm' : 'text-xs'}`}>
-                      <li>• Prefer humans to objects</li>
-                      <li>• Happy with any caregiver</li>
-                      <li>• No stranger anxiety</li>
+                    
+                    <div className={`bg-blue-800/80 border border-blue-500/40 rounded-lg mb-3 text-center ${isPresentation ? 'py-2 px-3' : 'py-1.5 px-2'}`}>
+                      <span className={`text-blue-200 font-bold ${isPresentation ? 'text-lg' : 'text-sm'}`}>6 wks - 6 mo</span>
+                    </div>
+                    
+                    <ul className={`text-gray-300 space-y-2 flex-grow relative z-10 ${isPresentation ? 'text-sm' : 'text-xs'}`}>
+                      <li className="flex items-start gap-2 group-hover:translate-x-1 transition-transform">
+                        <span className="text-blue-400 mt-0.5">●</span>
+                        <span>Prefer humans to objects</span>
+                      </li>
+                      <li className="flex items-start gap-2 group-hover:translate-x-1 transition-transform delay-75">
+                        <span className="text-blue-400 mt-0.5">●</span>
+                        <span>Happy with any caregiver</span>
+                      </li>
+                      <li className="flex items-start gap-2 group-hover:translate-x-1 transition-transform delay-100">
+                        <span className="text-blue-400 mt-0.5">●</span>
+                        <span>No stranger anxiety</span>
+                      </li>
                     </ul>
+                    
+                    <div className="h-1 w-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full mt-3 group-hover:shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-shadow"></div>
                   </div>
 
-                  {/* Stage 3 */}
-                  <div className={`bg-gray-800 rounded-xl border-t-4 border-amber-500 shadow-xl flex flex-col ${isPresentation ? 'p-6' : 'p-4'}`}>
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className={`bg-amber-900/60 text-amber-400 font-bold rounded-lg ${isPresentation ? 'px-3 py-1 text-lg' : 'px-2 py-0.5 text-sm'}`}>3</span>
-                      <h4 className={`font-bold text-amber-400 ${isPresentation ? 'text-lg' : 'text-sm'}`}>Specific</h4>
+                  {/* Stage 3 - Specific */}
+                  <div className={`group relative bg-gradient-to-br from-amber-900/60 to-amber-800/30 rounded-xl shadow-xl hover:shadow-2xl hover:shadow-amber-500/20 transition-all duration-500 cursor-pointer transform hover:scale-[1.03] hover:-translate-y-1 flex flex-col overflow-hidden ${isPresentation ? 'p-6' : 'p-4'}`}>
+                    <div className="absolute inset-0 bg-amber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div className="flex items-center justify-between mb-3 relative z-10">
+                      <div className="flex items-center gap-2">
+                        <div className={`relative ${isPresentation ? 'w-12 h-12' : 'w-9 h-9'}`}>
+                          <div className="absolute inset-0 bg-amber-500/30 rounded-full animate-ping opacity-20"></div>
+                          <div className={`relative w-full h-full bg-gradient-to-br from-amber-500 to-amber-700 rounded-full flex items-center justify-center shadow-lg shadow-amber-500/30`}>
+                            <span className={`text-white font-black ${isPresentation ? 'text-xl' : 'text-base'}`}>3</span>
+                          </div>
+                        </div>
+                        <h4 className={`font-black text-amber-300 ${isPresentation ? 'text-xl' : 'text-base'}`}>Specific</h4>
+                      </div>
                     </div>
-                    <p className={`text-amber-400 font-semibold mb-2 ${isPresentation ? 'text-base' : 'text-xs'}`}>7+ months</p>
-                    <ul className={`text-gray-300 space-y-2 flex-grow ${isPresentation ? 'text-sm' : 'text-xs'}`}>
-                      <li>• Primary attachment forms</li>
-                      <li>• <strong className="text-red-400">Stranger anxiety</strong> appears</li>
-                      <li>• <strong className="text-red-400">Separation anxiety</strong></li>
+                    
+                    <div className={`bg-amber-800/80 border border-amber-500/40 rounded-lg mb-3 text-center ${isPresentation ? 'py-2 px-3' : 'py-1.5 px-2'}`}>
+                      <span className={`text-amber-200 font-bold ${isPresentation ? 'text-lg' : 'text-sm'}`}>7+ months</span>
+                    </div>
+                    
+                    <ul className={`text-gray-300 space-y-2 flex-grow relative z-10 ${isPresentation ? 'text-sm' : 'text-xs'}`}>
+                      <li className="flex items-start gap-2 group-hover:translate-x-1 transition-transform">
+                        <span className="text-amber-400 mt-0.5">●</span>
+                        <span>Primary attachment forms</span>
+                      </li>
+                      <li className="flex items-start gap-2 group-hover:translate-x-1 transition-transform delay-75">
+                        <span className="text-red-400 mt-0.5">⚠</span>
+                        <span className="text-red-300 font-semibold">Stranger anxiety appears</span>
+                      </li>
+                      <li className="flex items-start gap-2 group-hover:translate-x-1 transition-transform delay-100">
+                        <span className="text-red-400 mt-0.5">⚠</span>
+                        <span className="text-red-300 font-semibold">Separation anxiety</span>
+                      </li>
                     </ul>
+                    
+                    <div className="h-1 w-full bg-gradient-to-r from-amber-600 to-amber-400 rounded-full mt-3 group-hover:shadow-[0_0_10px_rgba(245,158,11,0.5)] transition-shadow"></div>
                   </div>
 
-                  {/* Stage 4 */}
-                  <div className={`bg-gray-800 rounded-xl border-t-4 border-green-500 shadow-xl flex flex-col ${isPresentation ? 'p-6' : 'p-4'}`}>
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className={`bg-green-900/60 text-green-400 font-bold rounded-lg ${isPresentation ? 'px-3 py-1 text-lg' : 'px-2 py-0.5 text-sm'}`}>4</span>
-                      <h4 className={`font-bold text-green-400 ${isPresentation ? 'text-lg' : 'text-sm'}`}>Multiple</h4>
+                  {/* Stage 4 - Multiple */}
+                  <div className={`group relative bg-gradient-to-br from-green-900/60 to-green-800/30 rounded-xl shadow-xl hover:shadow-2xl hover:shadow-green-500/20 transition-all duration-500 cursor-pointer transform hover:scale-[1.03] hover:-translate-y-1 flex flex-col overflow-hidden ${isPresentation ? 'p-6' : 'p-4'}`}>
+                    <div className="absolute inset-0 bg-green-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div className="flex items-center justify-between mb-3 relative z-10">
+                      <div className="flex items-center gap-2">
+                        <div className={`relative ${isPresentation ? 'w-12 h-12' : 'w-9 h-9'}`}>
+                          <div className="absolute inset-0 bg-green-500/30 rounded-full animate-ping opacity-20"></div>
+                          <div className={`relative w-full h-full bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center shadow-lg shadow-green-500/30`}>
+                            <span className={`text-white font-black ${isPresentation ? 'text-xl' : 'text-base'}`}>4</span>
+                          </div>
+                        </div>
+                        <h4 className={`font-black text-green-300 ${isPresentation ? 'text-xl' : 'text-base'}`}>Multiple</h4>
+                      </div>
                     </div>
-                    <p className={`text-amber-400 font-semibold mb-2 ${isPresentation ? 'text-base' : 'text-xs'}`}>10+ months</p>
-                    <ul className={`text-gray-300 space-y-2 flex-grow ${isPresentation ? 'text-sm' : 'text-xs'}`}>
-                      <li>• Secondary attachments form</li>
-                      <li>• Extended family bonds</li>
-                      <li>• Hierarchy of attachments</li>
+                    
+                    <div className={`bg-green-800/80 border border-green-500/40 rounded-lg mb-3 text-center ${isPresentation ? 'py-2 px-3' : 'py-1.5 px-2'}`}>
+                      <span className={`text-green-200 font-bold ${isPresentation ? 'text-lg' : 'text-sm'}`}>10+ months</span>
+                    </div>
+                    
+                    <ul className={`text-gray-300 space-y-2 flex-grow relative z-10 ${isPresentation ? 'text-sm' : 'text-xs'}`}>
+                      <li className="flex items-start gap-2 group-hover:translate-x-1 transition-transform">
+                        <span className="text-green-400 mt-0.5">●</span>
+                        <span>Secondary attachments form</span>
+                      </li>
+                      <li className="flex items-start gap-2 group-hover:translate-x-1 transition-transform delay-75">
+                        <span className="text-green-400 mt-0.5">●</span>
+                        <span>Extended family bonds</span>
+                      </li>
+                      <li className="flex items-start gap-2 group-hover:translate-x-1 transition-transform delay-100">
+                        <span className="text-green-400 mt-0.5">●</span>
+                        <span>Hierarchy of attachments</span>
+                      </li>
                     </ul>
+                    
+                    <div className="h-1 w-full bg-gradient-to-r from-green-600 to-green-400 rounded-full mt-3 group-hover:shadow-[0_0_10px_rgba(34,197,94,0.5)] transition-shadow"></div>
                   </div>
                 </div>
               </div>
@@ -1059,7 +1188,7 @@ export default function App() {
                 {/* Essay Question */}
                 <div className={`bg-gradient-to-r from-amber-900/40 to-amber-800/20 border-l-4 border-amber-500 rounded-r-xl shadow-xl mb-6 ${isPresentation ? 'p-6' : 'p-4'}`}>
                   <p className={`text-amber-300 font-bold ${isPresentation ? 'text-2xl' : 'text-lg'}`}>
-                    📝 Sample Question: "Outline and evaluate Schaffer's stages of attachment." (16 marks)
+                    📝 Sample Question: "Outline and evaluate Schaffer's stages of attachment." (12 marks)
                   </p>
                 </div>
 
@@ -1139,23 +1268,31 @@ export default function App() {
         case 0:
           return (
             <Slide isPresentation={isPresentation}>
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <div className="flex items-center gap-4 mb-6 relative">
-                  <div className="absolute inset-0 bg-orange-500 blur-[100px] opacity-20 rounded-full"></div>
-                  <Users size={isPresentation ? 64 : 48} className="text-orange-400 relative z-10" />
-                  <Scale size={isPresentation ? 64 : 48} className="text-orange-400 relative z-10" />
+              <div className="flex flex-col items-center justify-center h-full text-center relative">
+                {/* Background glow effects */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-orange-500 blur-[150px] opacity-15 rounded-full animate-pulse"></div>
+                  <div className="absolute bottom-1/4 right-1/3 w-64 h-64 bg-teal-500 blur-[120px] opacity-10 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
                 </div>
-                <h1 className={`font-black mb-4 bg-gradient-to-r from-orange-400 via-orange-300 to-amber-400 bg-clip-text text-transparent ${isPresentation ? 'text-7xl' : 'text-5xl'}`}>
+                
+                <div className="flex items-center gap-4 mb-6 relative z-10">
+                  <div className="absolute inset-0 bg-orange-500 blur-[80px] opacity-20 rounded-full"></div>
+                  <div className="relative z-10 flex gap-4 p-6 glass-panel rounded-2xl">
+                    <Users size={isPresentation ? 64 : 48} className="text-orange-400 drop-shadow-[0_0_10px_rgba(249,115,22,0.5)]" />
+                    <Scale size={isPresentation ? 64 : 48} className="text-orange-400 drop-shadow-[0_0_10px_rgba(249,115,22,0.5)]" />
+                  </div>
+                </div>
+                <h1 className={`font-black mb-4 bg-gradient-to-r from-orange-400 via-orange-300 to-amber-400 bg-clip-text text-transparent drop-shadow-lg ${isPresentation ? 'text-7xl' : 'text-5xl'}`}>
                   The Role of the Father
                 </h1>
-                <div className={`h-1 w-64 bg-orange-600 mb-4`}></div>
+                <div className="h-1 w-64 bg-gradient-to-r from-transparent via-orange-500 to-transparent mb-4 shadow-[0_0_10px_rgba(249,115,22,0.5)]"></div>
                 <p className={`text-orange-400 max-w-2xl mb-8 tracking-widest uppercase font-bold ${isPresentation ? 'text-xl' : 'text-sm'}`}>
                   Biological instinct or social construction?
                 </p>
                 <div className={`flex flex-wrap justify-center gap-3 ${isPresentation ? 'text-lg' : 'text-sm'}`}>
-                  <span className="bg-orange-900/30 text-orange-400 px-4 py-2 rounded-full border border-orange-500/30">Nature vs Nurture</span>
-                  <span className="bg-orange-900/30 text-orange-400 px-4 py-2 rounded-full border border-orange-500/30">Grossmann et al.</span>
-                  <span className="bg-orange-900/30 text-orange-400 px-4 py-2 rounded-full border border-orange-500/30">Field (1978)</span>
+                  <span className="bg-orange-900/40 text-orange-400 px-4 py-2 rounded-full border border-orange-500/40 shadow-[0_0_10px_rgba(249,115,22,0.15)]">Nature vs Nurture</span>
+                  <span className="bg-orange-900/40 text-orange-400 px-4 py-2 rounded-full border border-orange-500/40 shadow-[0_0_10px_rgba(249,115,22,0.15)]">Grossmann et al.</span>
+                  <span className="bg-orange-900/40 text-orange-400 px-4 py-2 rounded-full border border-orange-500/40 shadow-[0_0_10px_rgba(249,115,22,0.15)]">Field (1978)</span>
                 </div>
               </div>
             </Slide>
@@ -1515,7 +1652,7 @@ export default function App() {
               <div className={`w-full h-full flex flex-col ${isPresentation ? 'px-8' : 'px-4'}`}>
                 <div className={`bg-gradient-to-r from-orange-900/40 to-orange-800/20 border-l-4 border-orange-500 rounded-r-xl shadow-xl mb-6 ${isPresentation ? 'p-6' : 'p-4'}`}>
                   <p className={`text-orange-300 font-bold ${isPresentation ? 'text-2xl' : 'text-lg'}`}>
-                    📝 Sample Question: "Discuss the role of the father in attachment." (16 marks)
+                    📝 Sample Question: "Discuss the role of the father in attachment." (12 marks)
                   </p>
                 </div>
 
@@ -1589,23 +1726,31 @@ export default function App() {
         case 0:
           return (
             <Slide isPresentation={isPresentation}>
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <div className="flex items-center gap-4 mb-6 relative">
-                  <div className="absolute inset-0 bg-red-500 blur-[100px] opacity-20 rounded-full"></div>
-                  <Bird size={isPresentation ? 64 : 48} className="text-red-400 relative z-10" />
-                  <Feather size={isPresentation ? 64 : 48} className="text-red-400 relative z-10" />
+              <div className="flex flex-col items-center justify-center h-full text-center relative">
+                {/* Background glow effects */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-red-500 blur-[150px] opacity-15 rounded-full animate-pulse"></div>
+                  <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-rose-500 blur-[120px] opacity-10 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
                 </div>
-                <h1 className={`font-black mb-4 bg-gradient-to-r from-red-400 via-red-300 to-rose-400 bg-clip-text text-transparent ${isPresentation ? 'text-7xl' : 'text-5xl'}`}>
+                
+                <div className="flex items-center gap-4 mb-6 relative z-10">
+                  <div className="absolute inset-0 bg-red-500 blur-[80px] opacity-20 rounded-full"></div>
+                  <div className="relative z-10 flex gap-4 p-6 glass-panel rounded-2xl">
+                    <Bird size={isPresentation ? 64 : 48} className="text-red-400 drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
+                    <Feather size={isPresentation ? 64 : 48} className="text-red-400 drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
+                  </div>
+                </div>
+                <h1 className={`font-black mb-4 bg-gradient-to-r from-red-400 via-red-300 to-rose-400 bg-clip-text text-transparent drop-shadow-lg ${isPresentation ? 'text-7xl' : 'text-5xl'}`}>
                   Animal Studies of Attachment
                 </h1>
-                <div className={`h-1 w-64 bg-red-600 mb-4`}></div>
+                <div className="h-1 w-64 bg-gradient-to-r from-transparent via-red-500 to-transparent mb-4 shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
                 <p className={`text-red-400 max-w-2xl mb-8 tracking-widest uppercase font-bold ${isPresentation ? 'text-xl' : 'text-sm'}`}>
                   Lorenz & Harlow
                 </p>
                 <div className={`flex flex-wrap justify-center gap-3 ${isPresentation ? 'text-lg' : 'text-sm'}`}>
-                  <span className="bg-red-900/30 text-red-400 px-4 py-2 rounded-full border border-red-500/30">Imprinting & Critical Periods</span>
-                  <span className="bg-red-900/30 text-red-400 px-4 py-2 rounded-full border border-red-500/30">Contact Comfort</span>
-                  <span className="bg-red-900/30 text-red-400 px-4 py-2 rounded-full border border-red-500/30">Surrogate Mothers</span>
+                  <span className="bg-red-900/40 text-red-400 px-4 py-2 rounded-full border border-red-500/40 shadow-[0_0_10px_rgba(239,68,68,0.15)]">Imprinting & Critical Periods</span>
+                  <span className="bg-red-900/40 text-red-400 px-4 py-2 rounded-full border border-red-500/40 shadow-[0_0_10px_rgba(239,68,68,0.15)]">Contact Comfort</span>
+                  <span className="bg-red-900/40 text-red-400 px-4 py-2 rounded-full border border-red-500/40 shadow-[0_0_10px_rgba(239,68,68,0.15)]">Surrogate Mothers</span>
                 </div>
               </div>
             </Slide>
@@ -1958,7 +2103,7 @@ export default function App() {
               <div className={`w-full h-full flex flex-col ${isPresentation ? 'px-8' : 'px-4'}`}>
                 <div className={`bg-gradient-to-r from-red-900/40 to-red-800/20 border-l-4 border-red-500 rounded-r-xl shadow-xl mb-6 ${isPresentation ? 'p-6' : 'p-4'}`}>
                   <p className={`text-red-300 font-bold ${isPresentation ? 'text-2xl' : 'text-lg'}`}>
-                    📝 Sample Question: "Outline and evaluate animal studies of attachment." (16 marks)
+                    📝 Sample Question: "Outline and evaluate animal studies of attachment." (12 marks)
                   </p>
                 </div>
 
@@ -2034,23 +2179,31 @@ export default function App() {
         case 0:
           return (
             <Slide isPresentation={isPresentation}>
-              <div className="flex flex-col items-center justify-center h-full text-center">
+              <div className="flex flex-col items-center justify-center h-full text-center relative">
+                {/* Background glow effects */}
+                <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-yellow-500/20 rounded-full blur-[150px]"></div>
+                <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-amber-500/20 rounded-full blur-[150px]"></div>
+                
                 <div className="flex items-center gap-4 mb-6 relative">
-                  <div className="absolute inset-0 bg-yellow-500 blur-[100px] opacity-20 rounded-full"></div>
-                  <BookOpen size={isPresentation ? 64 : 48} className="text-yellow-400 relative z-10" />
-                  <Brain size={isPresentation ? 64 : 48} className="text-yellow-400 relative z-10" />
+                  <div className="absolute inset-0 bg-yellow-500 blur-[100px] opacity-30 rounded-full"></div>
+                  <div className="glass-panel p-4 rounded-2xl">
+                    <BookOpen size={isPresentation ? 64 : 48} className="text-yellow-400 relative z-10" />
+                  </div>
+                  <div className="glass-panel p-4 rounded-2xl">
+                    <Brain size={isPresentation ? 64 : 48} className="text-yellow-400 relative z-10" />
+                  </div>
                 </div>
-                <h1 className={`font-black mb-4 bg-gradient-to-r from-yellow-400 via-yellow-300 to-amber-400 bg-clip-text text-transparent ${isPresentation ? 'text-7xl' : 'text-5xl'}`}>
+                <h1 className={`font-black mb-4 bg-gradient-to-r from-yellow-400 via-yellow-300 to-amber-400 bg-clip-text text-transparent text-neon-amber ${isPresentation ? 'text-7xl' : 'text-5xl'}`}>
                   Explanations of Attachment
                 </h1>
-                <div className={`h-1 w-64 bg-yellow-600 mb-4`}></div>
+                <div className={`h-1 w-64 bg-gradient-to-r from-transparent via-yellow-500 to-transparent mb-4 shadow-[0_0_15px_rgba(234,179,8,0.5)]`}></div>
                 <p className={`text-yellow-400 max-w-2xl mb-8 tracking-widest uppercase font-bold ${isPresentation ? 'text-xl' : 'text-sm'}`}>
                   Learning Theory vs Bowlby
                 </p>
                 <div className={`flex flex-wrap justify-center gap-3 ${isPresentation ? 'text-lg' : 'text-sm'}`}>
-                  <span className="bg-yellow-900/30 text-yellow-400 px-4 py-2 rounded-full border border-yellow-500/30">Classical & Operant Conditioning</span>
-                  <span className="bg-yellow-900/30 text-yellow-400 px-4 py-2 rounded-full border border-yellow-500/30">Monotropic Theory</span>
-                  <span className="bg-yellow-900/30 text-yellow-400 px-4 py-2 rounded-full border border-yellow-500/30">IWM & Social Releasers</span>
+                  <span className="bg-yellow-900/30 text-yellow-400 px-4 py-2 rounded-full border border-yellow-500/30 shadow-[0_0_10px_rgba(234,179,8,0.2)]">Classical & Operant Conditioning</span>
+                  <span className="bg-yellow-900/30 text-yellow-400 px-4 py-2 rounded-full border border-yellow-500/30 shadow-[0_0_10px_rgba(234,179,8,0.2)]">Monotropic Theory</span>
+                  <span className="bg-yellow-900/30 text-yellow-400 px-4 py-2 rounded-full border border-yellow-500/30 shadow-[0_0_10px_rgba(234,179,8,0.2)]">IWM & Social Releasers</span>
                 </div>
               </div>
             </Slide>
@@ -2393,7 +2546,7 @@ export default function App() {
               <div className={`w-full h-full flex flex-col ${isPresentation ? 'px-8' : 'px-4'}`}>
                 <div className={`bg-gradient-to-r from-yellow-900/40 to-yellow-800/20 border-l-4 border-yellow-500 rounded-r-xl shadow-xl mb-6 ${isPresentation ? 'p-6' : 'p-4'}`}>
                   <p className={`text-yellow-300 font-bold ${isPresentation ? 'text-2xl' : 'text-lg'}`}>
-                    📝 Sample Question: "Outline and evaluate learning theory as an explanation of attachment." (16 marks)
+                    📝 Sample Question: "Outline and evaluate learning theory as an explanation of attachment." (12 marks)
                   </p>
                 </div>
 
@@ -2467,23 +2620,31 @@ export default function App() {
         case 0:
           return (
             <Slide isPresentation={isPresentation}>
-              <div className="flex flex-col items-center justify-center h-full text-center">
+              <div className="flex flex-col items-center justify-center h-full text-center relative">
+                {/* Background glow effects */}
+                <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-teal-500/20 rounded-full blur-[150px]"></div>
+                <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-cyan-500/20 rounded-full blur-[150px]"></div>
+                
                 <div className="flex items-center gap-4 mb-6 relative">
-                  <div className="absolute inset-0 bg-teal-500 blur-[100px] opacity-20 rounded-full"></div>
-                  <Baby size={isPresentation ? 64 : 48} className="text-teal-400 relative z-10" />
-                  <Heart size={isPresentation ? 64 : 48} className="text-teal-400 relative z-10" />
+                  <div className="absolute inset-0 bg-teal-500 blur-[100px] opacity-30 rounded-full"></div>
+                  <div className="glass-panel p-4 rounded-2xl">
+                    <Baby size={isPresentation ? 64 : 48} className="text-teal-400 relative z-10" />
+                  </div>
+                  <div className="glass-panel p-4 rounded-2xl">
+                    <Heart size={isPresentation ? 64 : 48} className="text-teal-400 relative z-10" />
+                  </div>
                 </div>
-                <h1 className={`font-black mb-4 bg-gradient-to-r from-teal-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent ${isPresentation ? 'text-7xl' : 'text-5xl'}`}>
+                <h1 className={`font-black mb-4 bg-gradient-to-r from-teal-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent text-neon-cyan ${isPresentation ? 'text-7xl' : 'text-5xl'}`}>
                   Types of Attachment
                 </h1>
-                <div className={`h-1 w-64 bg-teal-600 mb-4`}></div>
+                <div className={`h-1 w-64 bg-gradient-to-r from-transparent via-teal-500 to-transparent mb-4 shadow-[0_0_15px_rgba(20,184,166,0.5)]`}></div>
                 <p className={`text-teal-400 max-w-2xl mb-8 tracking-widest uppercase font-bold ${isPresentation ? 'text-xl' : 'text-sm'}`}>
                   Ainsworth's Strange Situation
                 </p>
                 <div className={`flex flex-wrap justify-center gap-3 ${isPresentation ? 'text-lg' : 'text-sm'}`}>
-                  <span className="bg-teal-900/30 text-teal-400 px-4 py-2 rounded-full border border-teal-500/30">Secure, Avoidant & Resistant</span>
-                  <span className="bg-teal-900/30 text-teal-400 px-4 py-2 rounded-full border border-teal-500/30">Ainsworth (1970)</span>
-                  <span className="bg-teal-900/30 text-teal-400 px-4 py-2 rounded-full border border-teal-500/30">Attachment Styles</span>
+                  <span className="bg-teal-900/30 text-teal-400 px-4 py-2 rounded-full border border-teal-500/30 shadow-[0_0_10px_rgba(20,184,166,0.2)]">Secure, Avoidant & Resistant</span>
+                  <span className="bg-teal-900/30 text-teal-400 px-4 py-2 rounded-full border border-teal-500/30 shadow-[0_0_10px_rgba(20,184,166,0.2)]">Ainsworth (1970)</span>
+                  <span className="bg-teal-900/30 text-teal-400 px-4 py-2 rounded-full border border-teal-500/30 shadow-[0_0_10px_rgba(20,184,166,0.2)]">Attachment Styles</span>
                 </div>
               </div>
             </Slide>
@@ -2551,45 +2712,59 @@ export default function App() {
               />
               <div className={`flex flex-col h-full ${isPresentation ? 'p-6' : 'p-4'}`}>
                 <div className={`bg-gradient-to-r from-teal-900/40 to-teal-800/20 border-l-4 border-teal-500 rounded-r-xl mb-6 ${isPresentation ? 'p-5' : 'p-4'}`}>
-                  <p className={`text-teal-300 ${isPresentation ? 'text-lg' : 'text-base'}`}>
-                    A controlled observation to assess attachment type through 8 episodes of separation and reunion
+                  <p className={`text-teal-300 font-semibold ${isPresentation ? 'text-lg' : 'text-base'}`}>
+                    A controlled observation with 8 episodes of separation and reunion to assess attachment type
                   </p>
                 </div>
 
-                <div className={`grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 ${isPresentation ? 'gap-4' : 'gap-3'}`}>
+                <div className={`grid grid-cols-2 md:grid-cols-4 gap-3 mb-6 ${isPresentation ? 'gap-4' : 'gap-3'}`}>
                   {[
-                    { num: 1, desc: 'Mother & infant enter room' },
-                    { num: 2, desc: 'Infant explores, mother passive' },
-                    { num: 3, desc: 'Stranger enters, talks to mother' },
-                    { num: 4, desc: 'Mother leaves, stranger offers comfort' },
-                    { num: 5, desc: 'Mother returns, stranger leaves' },
-                    { num: 6, desc: 'Mother leaves, infant alone' },
-                    { num: 7, desc: 'Stranger enters, offers comfort' },
-                    { num: 8, desc: 'Mother returns, stranger leaves' }
+                    { num: 1, desc: 'Mother & infant enter room', icon: '🚪' },
+                    { num: 2, desc: 'Infant explores, mother passive', icon: '🧸' },
+                    { num: 3, desc: 'Stranger enters, talks to mother', icon: '👤' },
+                    { num: 4, desc: 'Mother leaves, stranger offers comfort', icon: '👋' },
+                    { num: 5, desc: 'Mother returns, stranger leaves', icon: '👋' },
+                    { num: 6, desc: 'Mother leaves, infant alone', icon: '😢' },
+                    { num: 7, desc: 'Stranger enters, offers comfort', icon: '🤝' },
+                    { num: 8, desc: 'Mother returns, stranger leaves', icon: '🤗' }
                   ].map((ep) => (
-                    <div key={ep.num} className={`bg-gray-800 rounded-lg border border-gray-700 ${isPresentation ? 'p-4' : 'p-3'}`}>
-                      <span className={`bg-teal-900/60 text-teal-400 font-bold rounded ${isPresentation ? 'px-2 py-1 text-sm' : 'px-2 py-0.5 text-xs'}`}>
-                        {ep.num}
-                      </span>
-                      <p className={`text-gray-300 mt-2 ${isPresentation ? 'text-base' : 'text-xs'}`}>{ep.desc}</p>
+                    <div key={ep.num} className={`group bg-gradient-to-br from-teal-900/40 to-teal-800/10 rounded-xl border border-teal-500/30 hover:border-teal-400 shadow-lg hover:shadow-2xl hover:shadow-teal-500/30 transition-all duration-300 transform hover:scale-105 cursor-pointer ${isPresentation ? 'p-5' : 'p-4'}`}>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className={`bg-teal-900/80 text-teal-300 font-black rounded-lg group-hover:bg-teal-700 transition-colors ${isPresentation ? 'px-3 py-1 text-xl' : 'px-2 py-1 text-lg'}`}>
+                          {ep.num}
+                        </span>
+                        <span className={`text-gray-400 group-hover:text-teal-300 transition-colors ${isPresentation ? 'text-xl' : 'text-base'}`}>{ep.icon}</span>
+                      </div>
+                      <p className={`text-gray-300 group-hover:text-gray-100 transition-colors ${isPresentation ? 'text-sm' : 'text-xs'}`}>{ep.desc}</p>
                     </div>
                   ))}
                 </div>
 
-                <div className={`bg-gray-800 rounded-xl border-t-4 border-teal-500 ${isPresentation ? 'p-5' : 'p-4'}`}>
-                  <h4 className={`text-teal-400 font-bold mb-3 ${isPresentation ? 'text-xl' : 'text-base'}`}>Key Behaviours Observed:</h4>
+                <div className={`bg-gradient-to-br from-teal-900/30 to-teal-800/10 rounded-xl border-t-4 border-teal-500 shadow-xl ${isPresentation ? 'p-6' : 'p-4'}`}>
+                  <h4 className={`text-teal-300 font-black mb-4 flex items-center gap-2 ${isPresentation ? 'text-2xl' : 'text-lg'}`}>
+                    🔍 Key Behaviours Observed:
+                  </h4>
                   <div className={`grid grid-cols-1 md:grid-cols-3 gap-4`}>
-                    <div className="text-center">
-                      <p className={`text-gray-400 font-semibold ${isPresentation ? 'text-base' : 'text-sm'}`}>Separation Anxiety</p>
-                      <p className={`text-gray-300 ${isPresentation ? 'text-sm' : 'text-xs'}`}>Distress when caregiver leaves</p>
+                    <div className={`bg-teal-900/40 border border-teal-500/30 rounded-lg hover:border-teal-400 transition-colors ${isPresentation ? 'p-5' : 'p-4'}`}>
+                      <div className={`flex items-center gap-2 mb-2 ${isPresentation ? 'mb-3' : 'mb-2'}`}>
+                        <span className={`text-teal-400 ${isPresentation ? 'text-2xl' : 'text-xl'}`}>⏱️</span>
+                        <p className={`text-teal-300 font-bold ${isPresentation ? 'text-lg' : 'text-sm'}`}>Separation Anxiety</p>
+                      </div>
+                      <p className={`text-gray-400 ${isPresentation ? 'text-base' : 'text-xs'}`}>Distress level when caregiver leaves</p>
                     </div>
-                    <div className="text-center">
-                      <p className={`text-gray-400 font-semibold ${isPresentation ? 'text-base' : 'text-sm'}`}>Stranger Anxiety</p>
-                      <p className={`text-gray-300 ${isPresentation ? 'text-sm' : 'text-xs'}`}>Response to unfamiliar adult</p>
+                    <div className={`bg-teal-900/40 border border-teal-500/30 rounded-lg hover:border-teal-400 transition-colors ${isPresentation ? 'p-5' : 'p-4'}`}>
+                      <div className={`flex items-center gap-2 mb-2 ${isPresentation ? 'mb-3' : 'mb-2'}`}>
+                        <span className={`text-teal-400 ${isPresentation ? 'text-2xl' : 'text-xl'}`}>👤</span>
+                        <p className={`text-teal-300 font-bold ${isPresentation ? 'text-lg' : 'text-sm'}`}>Stranger Anxiety</p>
+                      </div>
+                      <p className={`text-gray-400 ${isPresentation ? 'text-base' : 'text-xs'}`}>Response to unfamiliar adults</p>
                     </div>
-                    <div className="text-center">
-                      <p className={`text-gray-400 font-semibold ${isPresentation ? 'text-base' : 'text-sm'}`}>Reunion Behaviour</p>
-                      <p className={`text-gray-300 ${isPresentation ? 'text-sm' : 'text-xs'}`}>Response when caregiver returns</p>
+                    <div className={`bg-teal-900/40 border border-teal-500/30 rounded-lg hover:border-teal-400 transition-colors ${isPresentation ? 'p-5' : 'p-4'}`}>
+                      <div className={`flex items-center gap-2 mb-2 ${isPresentation ? 'mb-3' : 'mb-2'}`}>
+                        <span className={`text-teal-400 ${isPresentation ? 'text-2xl' : 'text-xl'}`}>🤗</span>
+                        <p className={`text-teal-300 font-bold ${isPresentation ? 'text-lg' : 'text-sm'}`}>Reunion Behaviour</p>
+                      </div>
+                      <p className={`text-gray-400 ${isPresentation ? 'text-base' : 'text-xs'}`}>Response when caregiver returns</p>
                     </div>
                   </div>
                 </div>
@@ -2609,65 +2784,185 @@ export default function App() {
               />
               <div className={`grid grid-cols-1 md:grid-cols-3 h-full ${isPresentation ? 'gap-6 p-6' : 'gap-4 p-4'}`}>
                 {/* Secure */}
-                <div className={`bg-gray-800 rounded-xl border-t-4 border-green-500 shadow-xl ${isPresentation ? 'p-6' : 'p-4'}`}>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className={`bg-green-900/60 text-green-400 font-bold rounded-lg ${isPresentation ? 'px-3 py-1 text-lg' : 'px-2 py-1 text-sm'}`}>Type B</span>
-                    <h3 className={`text-green-400 font-bold ${isPresentation ? 'text-xl' : 'text-base'}`}>Secure</h3>
+                <div className={`group bg-gradient-to-br from-green-900/40 to-green-800/10 rounded-xl shadow-xl hover:shadow-2xl hover:shadow-green-500/30 transition-all duration-300 cursor-pointer transform hover:scale-[1.02] card-hover-glow flex flex-col ${isPresentation ? 'p-6' : 'p-4'}`}>
+                  {/* Header with Circular Gauge */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <span className={`bg-green-900/60 text-green-400 font-bold rounded-lg inline-block shadow-[0_0_10px_rgba(34,197,94,0.3)] ${isPresentation ? 'px-3 py-1 text-lg' : 'px-2 py-1 text-sm'}`}>Type B</span>
+                      <h3 className={`text-green-400 font-black mt-2 text-neon ${isPresentation ? 'text-3xl' : 'text-xl'}`}>Secure</h3>
+                    </div>
+                    {/* Circular Progress Ring */}
+                    <div className={`relative ${isPresentation ? 'w-24 h-24' : 'w-16 h-16'}`}>
+                      <svg className="w-full h-full transform -rotate-90">
+                        <circle
+                          cx="50%"
+                          cy="50%"
+                          r="45%"
+                          stroke="rgba(34, 197, 94, 0.2)"
+                          strokeWidth="8"
+                          fill="none"
+                        />
+                        <circle
+                          cx="50%"
+                          cy="50%"
+                          r="45%"
+                          stroke="url(#greenGradient)"
+                          strokeWidth="8"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeDasharray="283"
+                          strokeDashoffset="90"
+                          className="transition-all duration-1000 ease-out"
+                          style={{ filter: 'drop-shadow(0 0 6px rgba(34, 197, 94, 0.6))' }}
+                        />
+                        <defs>
+                          <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#22c55e" />
+                            <stop offset="100%" stopColor="#4ade80" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className={`text-green-400 font-black ${isPresentation ? 'text-lg' : 'text-sm'}`}>68%</span>
+                      </div>
+                    </div>
                   </div>
-                  <p className={`text-green-300 font-semibold mb-3 ${isPresentation ? 'text-lg' : 'text-sm'}`}>60-75% of infants</p>
-                  <ul className={`text-gray-300 space-y-2 ${isPresentation ? 'text-base' : 'text-xs'}`}>
-                    <li>✓ Uses mother as secure base</li>
-                    <li>✓ Moderate distress at separation</li>
-                    <li>✓ Enthusiastic at reunion</li>
-                    <li>✓ Easily soothed by mother</li>
-                    <li>✓ Wary of strangers</li>
-                  </ul>
-                  <div className={`mt-4 bg-green-900/30 border border-green-500/30 rounded-lg ${isPresentation ? 'p-3' : 'p-2'}`}>
-                    <p className={`text-green-300 ${isPresentation ? 'text-sm' : 'text-xs'}`}>
-                      <strong>Caregiver:</strong> Sensitive, responsive
-                    </p>
+
+                  <div className={`flex-grow ${isPresentation ? 'p-4 space-y-3' : 'p-3 space-y-2'} bg-green-900/30 rounded-lg border border-green-500/20 mb-4`}>
+                    <h4 className={`text-green-300 font-bold ${isPresentation ? 'text-base' : 'text-sm'}`}>Key Behaviours:</h4>
+                    <ul className={`text-gray-300 space-y-1 ${isPresentation ? 'text-base' : 'text-xs'}`}>
+                      <li className="flex items-start gap-2"><span className="text-green-400 font-bold">✓</span> <span>Uses mother as secure base</span></li>
+                      <li className="flex items-start gap-2"><span className="text-green-400 font-bold">✓</span> <span>Moderate separation distress</span></li>
+                      <li className="flex items-start gap-2"><span className="text-green-400 font-bold">✓</span> <span>Enthusiastic at reunion</span></li>
+                      <li className="flex items-start gap-2"><span className="text-green-400 font-bold">✓</span> <span>Easily comforted by caregiver</span></li>
+                    </ul>
+                  </div>
+
+                  <div className={`bg-green-500/10 border border-green-500/30 rounded-lg group-hover:bg-green-500/20 group-hover:shadow-[0_0_20px_rgba(34,197,94,0.2)] transition-all ${isPresentation ? 'p-4' : 'p-3'}`}>
+                    <p className={`text-green-300 font-semibold mb-1 ${isPresentation ? 'text-base' : 'text-sm'}`}>Caregiver Style:</p>
+                    <p className={`text-green-200 font-bold ${isPresentation ? 'text-lg' : 'text-sm'}`}>Sensitive & Responsive</p>
                   </div>
                 </div>
 
                 {/* Insecure-Avoidant */}
-                <div className={`bg-gray-800 rounded-xl border-t-4 border-blue-500 shadow-xl ${isPresentation ? 'p-6' : 'p-4'}`}>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className={`bg-blue-900/60 text-blue-400 font-bold rounded-lg ${isPresentation ? 'px-3 py-1 text-lg' : 'px-2 py-1 text-sm'}`}>Type A</span>
-                    <h3 className={`text-blue-400 font-bold ${isPresentation ? 'text-xl' : 'text-base'}`}>Insecure-Avoidant</h3>
+                <div className={`group bg-gradient-to-br from-blue-900/40 to-blue-800/10 rounded-xl shadow-xl hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 cursor-pointer transform hover:scale-[1.02] card-hover-glow flex flex-col ${isPresentation ? 'p-6' : 'p-4'}`}>
+                  {/* Header with Circular Gauge */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <span className={`bg-blue-900/60 text-blue-400 font-bold rounded-lg inline-block shadow-[0_0_10px_rgba(59,130,246,0.3)] ${isPresentation ? 'px-3 py-1 text-lg' : 'px-2 py-1 text-sm'}`}>Type A</span>
+                      <h3 className={`text-blue-400 font-black mt-2 ${isPresentation ? 'text-3xl' : 'text-xl'}`} style={{textShadow: '0 0 5px rgba(59, 130, 246, 0.5)'}}>Avoidant</h3>
+                    </div>
+                    {/* Circular Progress Ring */}
+                    <div className={`relative ${isPresentation ? 'w-24 h-24' : 'w-16 h-16'}`}>
+                      <svg className="w-full h-full transform -rotate-90">
+                        <circle
+                          cx="50%"
+                          cy="50%"
+                          r="45%"
+                          stroke="rgba(59, 130, 246, 0.2)"
+                          strokeWidth="8"
+                          fill="none"
+                        />
+                        <circle
+                          cx="50%"
+                          cy="50%"
+                          r="45%"
+                          stroke="url(#blueGradient)"
+                          strokeWidth="8"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeDasharray="283"
+                          strokeDashoffset="218"
+                          className="transition-all duration-1000 ease-out"
+                          style={{ filter: 'drop-shadow(0 0 6px rgba(59, 130, 246, 0.6))' }}
+                        />
+                        <defs>
+                          <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#3b82f6" />
+                            <stop offset="100%" stopColor="#60a5fa" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className={`text-blue-400 font-black ${isPresentation ? 'text-lg' : 'text-sm'}`}>23%</span>
+                      </div>
+                    </div>
                   </div>
-                  <p className={`text-blue-300 font-semibold mb-3 ${isPresentation ? 'text-lg' : 'text-sm'}`}>20-25% of infants</p>
-                  <ul className={`text-gray-300 space-y-2 ${isPresentation ? 'text-base' : 'text-xs'}`}>
-                    <li>✓ Explores independently</li>
-                    <li>✓ Little distress at separation</li>
-                    <li>✓ Avoids mother at reunion</li>
-                    <li>✓ Accepts comfort from strangers</li>
-                    <li>✓ Shows little emotion</li>
-                  </ul>
-                  <div className={`mt-4 bg-blue-900/30 border border-blue-500/30 rounded-lg ${isPresentation ? 'p-3' : 'p-2'}`}>
-                    <p className={`text-blue-300 ${isPresentation ? 'text-sm' : 'text-xs'}`}>
-                      <strong>Caregiver:</strong> Rejecting, unresponsive
-                    </p>
+
+                  <div className={`flex-grow ${isPresentation ? 'p-4 space-y-3' : 'p-3 space-y-2'} bg-blue-900/30 rounded-lg border border-blue-500/20 mb-4`}>
+                    <h4 className={`text-blue-300 font-bold ${isPresentation ? 'text-base' : 'text-sm'}`}>Key Behaviours:</h4>
+                    <ul className={`text-gray-300 space-y-1 ${isPresentation ? 'text-base' : 'text-xs'}`}>
+                      <li className="flex items-start gap-2"><span className="text-blue-400 font-bold">⚠</span> <span>Explores independently</span></li>
+                      <li className="flex items-start gap-2"><span className="text-blue-400 font-bold">⚠</span> <span>Little separation distress</span></li>
+                      <li className="flex items-start gap-2"><span className="text-blue-400 font-bold">⚠</span> <span>Avoids mother at reunion</span></li>
+                      <li className="flex items-start gap-2"><span className="text-blue-400 font-bold">⚠</span> <span>Shows little emotion</span></li>
+                    </ul>
+                  </div>
+
+                  <div className={`bg-blue-500/10 border border-blue-500/30 rounded-lg group-hover:bg-blue-500/20 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] transition-all ${isPresentation ? 'p-4' : 'p-3'}`}>
+                    <p className={`text-blue-300 font-semibold mb-1 ${isPresentation ? 'text-base' : 'text-sm'}`}>Caregiver Style:</p>
+                    <p className={`text-blue-200 font-bold ${isPresentation ? 'text-lg' : 'text-sm'}`}>Rejecting & Unresponsive</p>
                   </div>
                 </div>
 
                 {/* Insecure-Resistant */}
-                <div className={`bg-gray-800 rounded-xl border-t-4 border-amber-500 shadow-xl ${isPresentation ? 'p-6' : 'p-4'}`}>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className={`bg-amber-900/60 text-amber-400 font-bold rounded-lg ${isPresentation ? 'px-3 py-1 text-lg' : 'px-2 py-1 text-sm'}`}>Type C</span>
-                    <h3 className={`text-amber-400 font-bold ${isPresentation ? 'text-xl' : 'text-base'}`}>Insecure-Resistant</h3>
+                <div className={`group bg-gradient-to-br from-amber-900/40 to-amber-800/10 rounded-xl shadow-xl hover:shadow-2xl hover:shadow-amber-500/30 transition-all duration-300 cursor-pointer transform hover:scale-[1.02] card-hover-glow flex flex-col ${isPresentation ? 'p-6' : 'p-4'}`}>
+                  {/* Header with Circular Gauge */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <span className={`bg-amber-900/60 text-amber-400 font-bold rounded-lg inline-block shadow-[0_0_10px_rgba(245,158,11,0.3)] ${isPresentation ? 'px-3 py-1 text-lg' : 'px-2 py-1 text-sm'}`}>Type C</span>
+                      <h3 className={`text-amber-400 font-black mt-2 text-neon-amber ${isPresentation ? 'text-3xl' : 'text-xl'}`}>Resistant</h3>
+                    </div>
+                    {/* Circular Progress Ring */}
+                    <div className={`relative ${isPresentation ? 'w-24 h-24' : 'w-16 h-16'}`}>
+                      <svg className="w-full h-full transform -rotate-90">
+                        <circle
+                          cx="50%"
+                          cy="50%"
+                          r="45%"
+                          stroke="rgba(245, 158, 11, 0.2)"
+                          strokeWidth="8"
+                          fill="none"
+                        />
+                        <circle
+                          cx="50%"
+                          cy="50%"
+                          r="45%"
+                          stroke="url(#amberGradient)"
+                          strokeWidth="8"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeDasharray="283"
+                          strokeDashoffset="246"
+                          className="transition-all duration-1000 ease-out"
+                          style={{ filter: 'drop-shadow(0 0 6px rgba(245, 158, 11, 0.6))' }}
+                        />
+                        <defs>
+                          <linearGradient id="amberGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#f59e0b" />
+                            <stop offset="100%" stopColor="#fbbf24" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className={`text-amber-400 font-black ${isPresentation ? 'text-lg' : 'text-sm'}`}>13%</span>
+                      </div>
+                    </div>
                   </div>
-                  <p className={`text-amber-300 font-semibold mb-3 ${isPresentation ? 'text-lg' : 'text-sm'}`}>10-15% of infants</p>
-                  <ul className={`text-gray-300 space-y-2 ${isPresentation ? 'text-base' : 'text-xs'}`}>
-                    <li>✓ Reluctant to explore</li>
-                    <li>✓ Extreme distress at separation</li>
-                    <li>✓ Seeks & rejects comfort</li>
-                    <li>✓ Hard to soothe</li>
-                    <li>✓ Very wary of strangers</li>
-                  </ul>
-                  <div className={`mt-4 bg-amber-900/30 border border-amber-500/30 rounded-lg ${isPresentation ? 'p-3' : 'p-2'}`}>
-                    <p className={`text-amber-300 ${isPresentation ? 'text-sm' : 'text-xs'}`}>
-                      <strong>Caregiver:</strong> Inconsistent responsiveness
-                    </p>
+
+                  <div className={`flex-grow ${isPresentation ? 'p-4 space-y-3' : 'p-3 space-y-2'} bg-amber-900/30 rounded-lg border border-amber-500/20 mb-4`}>
+                    <h4 className={`text-amber-300 font-bold ${isPresentation ? 'text-base' : 'text-sm'}`}>Key Behaviours:</h4>
+                    <ul className={`text-gray-300 space-y-1 ${isPresentation ? 'text-base' : 'text-xs'}`}>
+                      <li className="flex items-start gap-2"><span className="text-amber-400 font-bold">⚠</span> <span>Reluctant to explore</span></li>
+                      <li className="flex items-start gap-2"><span className="text-amber-400 font-bold">⚠</span> <span>Extreme separation distress</span></li>
+                      <li className="flex items-start gap-2"><span className="text-amber-400 font-bold">⚠</span> <span>Seek-reject comfort cycle</span></li>
+                      <li className="flex items-start gap-2"><span className="text-amber-400 font-bold">⚠</span> <span>Hard to soothe</span></li>
+                    </ul>
+                  </div>
+
+                  <div className={`bg-amber-500/10 border border-amber-500/30 rounded-lg group-hover:bg-amber-500/20 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.2)] transition-all ${isPresentation ? 'p-4' : 'p-3'}`}>
+                    <p className={`text-amber-300 font-semibold mb-1 ${isPresentation ? 'text-base' : 'text-sm'}`}>Caregiver Style:</p>
+                    <p className={`text-amber-200 font-bold ${isPresentation ? 'text-lg' : 'text-sm'}`}>Inconsistent Responsiveness</p>
                   </div>
                 </div>
               </div>
@@ -2825,7 +3120,7 @@ export default function App() {
               <div className={`w-full h-full flex flex-col ${isPresentation ? 'px-8' : 'px-4'}`}>
                 <div className={`bg-gradient-to-r from-teal-900/40 to-teal-800/20 border-l-4 border-teal-500 rounded-r-xl shadow-xl mb-6 ${isPresentation ? 'p-6' : 'p-4'}`}>
                   <p className={`text-teal-300 font-bold ${isPresentation ? 'text-2xl' : 'text-lg'}`}>
-                    📝 Sample Question: "Describe and evaluate types of attachment." (16 marks)
+                    📝 Sample Question: "Describe and evaluate types of attachment." (12 marks)
                   </p>
                 </div>
 
@@ -2901,22 +3196,30 @@ export default function App() {
         case 0:
           return (
             <Slide isPresentation={isPresentation}>
-              <div className="flex flex-col items-center justify-center h-full text-center">
+              <div className="flex flex-col items-center justify-center h-full text-center relative">
+                {/* Background glow effects */}
+                <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-500/20 rounded-full blur-[150px]"></div>
+                <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-pink-500/20 rounded-full blur-[150px]"></div>
+                
                 <div className="flex items-center gap-4 mb-6 relative">
-                  <div className="absolute inset-0 bg-purple-500 blur-[100px] opacity-20 rounded-full"></div>
-                  <Globe2 size={isPresentation ? 64 : 48} className="text-purple-300 relative z-10" />
-                  <AlertTriangle size={isPresentation ? 64 : 48} className="text-purple-300 relative z-10" />
+                  <div className="absolute inset-0 bg-purple-500 blur-[100px] opacity-30 rounded-full"></div>
+                  <div className="glass-panel p-4 rounded-2xl">
+                    <Globe2 size={isPresentation ? 64 : 48} className="text-purple-300 relative z-10" />
+                  </div>
+                  <div className="glass-panel p-4 rounded-2xl">
+                    <AlertTriangle size={isPresentation ? 64 : 48} className="text-purple-300 relative z-10" />
+                  </div>
                 </div>
-                <h1 className={`font-black mb-4 bg-gradient-to-r from-purple-400 via-purple-300 to-pink-400 bg-clip-text text-transparent ${isPresentation ? 'text-7xl' : 'text-5xl'}`}>
+                <h1 className={`font-black mb-4 bg-gradient-to-r from-purple-400 via-purple-300 to-pink-400 bg-clip-text text-transparent text-neon-pink ${isPresentation ? 'text-7xl' : 'text-5xl'}`}>
                   Cultural Variations & Maternal Deprivation
                 </h1>
-                <div className={`h-1 w-64 bg-purple-600 mb-4`}></div>
+                <div className={`h-1 w-64 bg-gradient-to-r from-transparent via-purple-500 to-transparent mb-4 shadow-[0_0_15px_rgba(168,85,247,0.5)]`}></div>
                 <p className={`text-purple-400 max-w-2xl mb-8 tracking-widest uppercase font-bold ${isPresentation ? 'text-xl' : 'text-sm'}`}>
                   Imposed Etics & Critical Periods
                 </p>
                 <div className={`flex flex-wrap justify-center gap-3 ${isPresentation ? 'text-lg' : 'text-sm'}`}>
-                  <span className="bg-purple-900/30 text-purple-400 px-4 py-2 rounded-full border border-purple-500/30">van IJzendoorn & Kroonenberg</span>
-                  <span className="bg-purple-900/30 text-purple-400 px-4 py-2 rounded-full border border-purple-500/30">Cultural Variation in Attachment</span>
+                  <span className="bg-purple-900/30 text-purple-400 px-4 py-2 rounded-full border border-purple-500/30 shadow-[0_0_10px_rgba(168,85,247,0.2)]">van IJzendoorn & Kroonenberg</span>
+                  <span className="bg-purple-900/30 text-purple-400 px-4 py-2 rounded-full border border-purple-500/30 shadow-[0_0_10px_rgba(168,85,247,0.2)]">Cultural Variation in Attachment</span>
                   <span className="bg-purple-900/30 text-purple-400 px-4 py-2 rounded-full border border-purple-500/30">Bowlby's Deprivation Hypothesis</span>
                 </div>
               </div>
@@ -3580,7 +3883,7 @@ export default function App() {
               <div className={`w-full h-full flex flex-col ${isPresentation ? 'px-8' : 'px-4'}`}>
                 <div className={`bg-gradient-to-r from-purple-900/40 to-purple-800/20 border-l-4 border-purple-500 rounded-r-xl shadow-xl mb-6 ${isPresentation ? 'p-6' : 'p-4'}`}>
                   <p className={`text-purple-200 font-bold ${isPresentation ? 'text-2xl' : 'text-lg'}`}>
-                    📝 Sample Question: "Discuss cultural variations in attachment and evaluate Bowlby\'s maternal deprivation hypothesis." (16 marks)
+                    📝 Sample Question: "Discuss cultural variations in attachment and evaluate Bowlby\'s maternal deprivation hypothesis." (12 marks)
                   </p>
                 </div>
 
@@ -3654,23 +3957,31 @@ export default function App() {
         case 0:
           return (
             <Slide isPresentation={isPresentation}>
-              <div className="flex flex-col items-center justify-center h-full text-center">
+              <div className="flex flex-col items-center justify-center h-full text-center relative">
+                {/* Background glow effects */}
+                <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-slate-400/20 rounded-full blur-[150px]"></div>
+                <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-400/20 rounded-full blur-[150px]"></div>
+                
                 <div className="flex items-center gap-4 mb-6 relative">
-                  <div className="absolute inset-0 bg-slate-400 blur-[100px] opacity-20 rounded-full"></div>
-                  <Home size={isPresentation ? 64 : 48} className="text-slate-200 relative z-10" />
-                  <Heart size={isPresentation ? 64 : 48} className="text-slate-300 relative z-10" />
+                  <div className="absolute inset-0 bg-slate-400 blur-[100px] opacity-30 rounded-full"></div>
+                  <div className="glass-panel p-4 rounded-2xl">
+                    <Home size={isPresentation ? 64 : 48} className="text-slate-200 relative z-10" />
+                  </div>
+                  <div className="glass-panel p-4 rounded-2xl">
+                    <Heart size={isPresentation ? 64 : 48} className="text-slate-300 relative z-10" />
+                  </div>
                 </div>
                 <h1 className={`font-black mb-4 bg-gradient-to-r from-slate-300 via-slate-200 to-blue-300 bg-clip-text text-transparent ${isPresentation ? 'text-7xl' : 'text-5xl'}`}>
                   Romanian Orphan Studies & Later Relationships
                 </h1>
-                <div className={`h-1 w-64 bg-slate-500 mb-4`}></div>
+                <div className={`h-1 w-64 bg-gradient-to-r from-transparent via-slate-400 to-transparent mb-4 shadow-[0_0_15px_rgba(148,163,184,0.5)]`}></div>
                 <p className={`text-slate-400 max-w-2xl mb-8 tracking-widest uppercase font-bold ${isPresentation ? 'text-xl' : 'text-sm'}`}>
                   Rutter & Deprivation vs Privation
                 </p>
                 <div className={`flex flex-wrap justify-center gap-3 ${isPresentation ? 'text-lg' : 'text-sm'}`}>
-                  <span className="bg-slate-900/30 text-slate-300 px-4 py-2 rounded-full border border-slate-500/30">Profound Deprivation</span>
-                  <span className="bg-slate-900/30 text-slate-300 px-4 py-2 rounded-full border border-slate-500/30">Sensitive vs Critical Periods</span>
-                  <span className="bg-slate-900/30 text-slate-300 px-4 py-2 rounded-full border border-slate-500/30">Recovery & Resilience</span>
+                  <span className="bg-slate-900/30 text-slate-300 px-4 py-2 rounded-full border border-slate-500/30 shadow-[0_0_10px_rgba(148,163,184,0.2)]">Profound Deprivation</span>
+                  <span className="bg-slate-900/30 text-slate-300 px-4 py-2 rounded-full border border-slate-500/30 shadow-[0_0_10px_rgba(148,163,184,0.2)]">Sensitive vs Critical Periods</span>
+                  <span className="bg-slate-900/30 text-slate-300 px-4 py-2 rounded-full border border-slate-500/30 shadow-[0_0_10px_rgba(148,163,184,0.2)]">Recovery & Resilience</span>
                 </div>
               </div>
             </Slide>
@@ -4386,7 +4697,7 @@ export default function App() {
               <div className={`w-full h-full flex flex-col ${isPresentation ? 'px-8' : 'px-4'}`}>
                 <div className={`bg-gradient-to-r from-slate-900/60 to-slate-800/30 border-l-4 border-slate-400 rounded-r-xl shadow-xl mb-6 ${isPresentation ? 'p-6' : 'p-4'}`}>
                   <p className={`text-slate-100 font-bold ${isPresentation ? 'text-2xl' : 'text-lg'}`}>
-                    📝 Sample Question: "Discuss the effects of institutionalisation and the influence of early attachment on later relationships." (16 marks)
+                    📝 Sample Question: "Discuss the effects of institutionalisation and the influence of early attachment on later relationships." (12 marks)
                   </p>
                 </div>
 
@@ -4513,8 +4824,20 @@ export default function App() {
         <div className="absolute top-4 right-4 z-50 flex gap-2">
           <button 
             onClick={() => { 
-              if (!isPresentation) setSidebarOpen(false); 
-              setIsPresentation(!isPresentation); 
+              const newState = !isPresentation;
+              if (!newState) {
+                // Exit presentation mode
+                if (document.fullscreenElement) {
+                  document.exitFullscreen().catch(() => {});
+                }
+              } else {
+                // Enter presentation mode
+                if (!document.fullscreenElement) {
+                  document.documentElement.requestFullscreen().catch(() => {});
+                }
+                setSidebarOpen(false);
+              }
+              setIsPresentation(newState); 
             }} 
             className={`p-3 rounded-lg text-gray-400 hover:text-white border transition-all ${
               isPresentation 
